@@ -107,9 +107,7 @@ void generateHeightmap(AppContext &context)
                                                      else
                                                      {
                                                          return color_from({34, 139, 34}); // grass
-                                                     }
-                                                 },
-                                                 PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+                                                     } }, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
 
     context.texture = LoadTextureFromImage(context.image);
     if (context.model.meshCount > 0)

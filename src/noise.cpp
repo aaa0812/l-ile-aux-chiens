@@ -58,26 +58,28 @@ float perlinNoiseSeeded(glm::vec2 const &position, int seed)
     return glm::perlin(position + cachedOffset);
 }
 
-float octaveNoise(glm::vec2 const &position, std::function<float(glm::vec2 const &)> noiseFunction)
+float octaveNoise(glm::vec2 const &position, std::function<float(glm::vec2 const &)> noiseFunction, int octaves, float lacunarity, float gain, float scale)
 {
     // TODO(student): Implement octave/fractal noise accumulation.
-    // Properties
-    const int octaves = 6;
-    float lacunarity = 2.0;
-    float gain = 0.5;
-    //
+
     // Initial values
-    float amplitude = 0.5;
-    float frequency = 1.; //
+    float amplitude = 0.5f;
+    float frequency = 1.0f; //
     float value = 0.0f;
+    float maxValue = 0.0f; // pour normaliser le résultat
+
     // Loop of octaves
     for (int i = 0; i < octaves; i++)
     {
-        value += amplitude * noiseFunction(frequency * position);
+        glm::vec2 Position = position * frequency * scale;
+        value += amplitude * noiseFunction(Position);
+        maxValue += amplitude;
         frequency *= lacunarity;
         amplitude *= gain;
     }
 
+    return value / maxValue; // Résultat normalisé
+
     // Temporary fallback return directly from the provided noise function for testing.
-    return value; // TODO : il faut normaliser le résultat
+    return noiseFunction(position);
 }
