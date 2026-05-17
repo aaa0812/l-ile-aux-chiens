@@ -58,13 +58,13 @@ void drawImGui(AppContext &context)
         ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
     }
     // SLIDER BRUIT FRACTAL
-    //      if (ImGui::CollapsingHeader("Bruit Fractal", ImGuiTreeNodeFlags_DefaultOpen))
-    //      {
-    //          ImGui::SliderFloat("Octaves", /*&context...*/, 1, 10);
-    //          ImGui::SliderFloat("Lacunarity", /*parametres*/, 1.0f, 5.0f);
-    //          ImGui::SliderFloat("Gain", /*parametres*/, 0.1f, 1.0f);
-    //          ImGui::SliderFloat("Scale", /*Parametres*/, 0.1f, 10.0f);
-    //      }
+    if (ImGui::CollapsingHeader("Bruit Fractal", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        ImGui::SliderInt("Octaves", &context.octaves, 1, 10);
+        ImGui::SliderFloat("Lacunarity", &context.lacunarity, 1.0f, 3.0f);
+        ImGui::SliderFloat("Gain", &context.gain, 0.1f, 1.0f);
+        ImGui::SliderFloat("Scale", &context.imageGenerationParameters.noiseScale, 0.1f, 10.0f);
+    }
 }
 
 void drawRaylibUI(AppContext &context)

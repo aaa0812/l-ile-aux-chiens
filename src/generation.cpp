@@ -90,7 +90,8 @@ void generateHeightmap(AppContext &context)
                                                               {
                                                                   // TODO(student): implement stack based noise and island mask
 
-                                                                  return (perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
+                                                                  //return (perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
+                                                                  return (octaveNoise(p, perlinNoise, context.octaves, context.lacunarity, context.gain, context.imageGenerationParameters.noiseScale));
                                                               });
 
     // exemple conversion from heightmap to color image
