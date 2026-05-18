@@ -9,3 +9,5 @@ void generateObjectsPositions(AppContext& context);
 float sampleHeightmap(AppContext const& context, float u, float v);
 
 void generateHeightmap(AppContext& context);
+
+float calcDistancePoints(glm::vec2 p1, glm::vec2 p2);

@@ -15,9 +15,9 @@ struct PointsGenerationParameters
 {
     // TODO(student): add parameters for points generation (ex: poisson disk radius, etc).
 
-    float r{0.01}; // minimum disctance between samples
+    float r{0.1}; // minimum distance between samples
     int limit{30};       // limit of samples to choose before rejection (constant k)
-    float cellSize = r / sqrt(2); // We pick the cell size to be bounded by r/√n, so that each grid cell will contain at most one sample
+    const float cellSize = r / sqrt(2); // We pick the cell size to be bounded by r/√n, so that each grid cell will contain at most one sample
 };
 
 struct AppContext
