@@ -8,16 +8,18 @@
 #include <iostream>
 #include <corecrt_math_defines.h>
 #include <algorithm>
+#include "utils/rand.hpp"
 
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const &params)
 {
     const int WIDTH = 1;
     const int HEIGHT = 1;
-    // std::vector<glm::vec2> grid = std::vector<glm::vec2>(1000, {-1, -1}); // background grid for storing samples and accelerating spatial searches (-1 = no samples)
     const int nbCols = WIDTH / params.cellSize;
     const int nbRows = HEIGHT / params.cellSize;
 
     std::vector<glm::vec2> positions(nbCols * nbRows, {});
+    int max = 10000;
+    int count = 0;
     std::vector<glm::vec2> activeList{};
     std::vector<std::vector<int>> grid(nbRows, std::vector<int>(nbCols, -1)); // background grid for storing samples and accelerating spatial searches (-1 = no samples)
     glm::vec2 randomInitPos = {static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX), static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX)};
@@ -29,53 +31,39 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
 
     // TODO(student): implement Poisson disk sampling to replace the above naive random generation
     // points output should be in [0..1] range, where (0,0) is one corner of the terrain and (1,1) is the opposite corner, so they can be easily scaled to terrain size and sampled from heightmap.
-    while (!activeList.empty())
+    while (activeList.size() > 0)
     {
         int n = GetRandomValue(0, activeList.size() - 1);
         glm::vec2 activePos = activeList[n];
-        bool founded{false};
+        bool found{false};
 
         for (int i = 0; i < params.limit; i++)
         {
-            float randAngle = static_cast<float>(GetRandomValue(0, 2 * M_PI));
-            float dist = static_cast<float>(GetRandomValue(params.r, 2 * params.r)); // distance at which the point will be
-            glm::vec2 dir = {cos(randAngle), sin(randAngle)};                        // direction of the point
+            float randAngle = static_cast<float>(GetRandomFloat(0, 2 * M_PI));
+            float dist = GetRandomFloat(params.r, 2 * params.r);               // distance at which the point will be
+            glm::vec2 dir = {cos(randAngle), sin(randAngle)};                  // direction of the point
 
             glm::vec2 candidate = activePos + dir * dist;
 
-            bool valid{true};
-            for (int i = -1; i <= 1; i++)
+            if (IsValid(candidate, params.cellSize, params.r, positions, grid))
             {
-                for (int j = -1; j <= 1; j++)
-                {
-                    
-                    int neighbor = grid[static_cast<int>(candidate.x / params.cellSize) + i][static_cast<int>(candidate.y / params.cellSize) + j];
-                    if (neighbor != -1)
-                    {
-                        float dist = calcDistancePoints(positions[neighbor], candidate);
-                        if (dist < params.r)
-                        {
-                            valid = false;
-                        }
-                    }
-                }
-            }
-
-            if (valid)
-            {
-                founded = true;
                 activeList.push_back(candidate);
-                int candidateIndex = static_cast<int>(candidate.x / params.cellSize) + static_cast<int>(candidate.y / params.cellSize) * nbCols;
+                std::cout << activeList.size();
+                int candidateX = std::max(0.f, std::min(static_cast<float>(grid[1].size() - 1), (candidate.x / params.cellSize)));
+                int candidateY = std::max(0.f, std::min(static_cast<float>(grid[1].size() - 1), (candidate.y / params.cellSize)));
+                int candidateIndex = candidateX + candidateY * nbCols;
                 positions[candidateIndex] = candidate;
-                grid[static_cast<int>(candidate.x / params.cellSize)][static_cast<int>(candidate.y / params.cellSize)] = candidateIndex;
+                grid[candidateX][candidateY] = candidateIndex;
+                found = true;
                 break;
             }
         }
 
-        if (!founded)
+        if (!found)
         {
             activeList.erase(activeList.begin() + n);
         }
+
     }
 
     return positions;
@@ -87,6 +75,37 @@ float calcDistancePoints(glm::vec2 p1, glm::vec2 p2)
     float dy = p2.y - p1.y;
 
     return sqrt((dx * dx) + (dy * dy));
+}
+
+bool IsValid(glm::vec2 candidate, float cellSize, float radius, std::vector<glm::vec2> points, std::vector<std::vector<int>> grid)
+{
+    if (candidate.x >= 0 && candidate.x <= 1 && candidate.y >= 0 && candidate.y <= 1)
+    {
+        int cellX = (int)(candidate.x / cellSize);
+        int cellY = (int)(candidate.y / cellSize);
+        int searchStartX = std::max(0, cellX - 2);
+        int searchEndX = std::min(cellX + 2, static_cast<int>(grid[1].size() - 1));
+        int searchStartY = std::max(0, cellY - 2);
+        int searchEndY = std::min(cellY + 2, static_cast<int>(grid[1].size() - 1));
+
+        for (int x{searchStartX}; x <= searchEndX; x++)
+        {
+            for (int y{searchStartY}; y <= searchEndY; y++)
+            {
+                int pointIndex = grid[x][y];
+                if (pointIndex != -1)
+                {
+                    float sqrDst = calcDistancePoints(candidate, points[pointIndex]);
+                    if (sqrDst < radius * radius)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    return false;
 }
 
 void generateObjectsPositions(AppContext &context)
