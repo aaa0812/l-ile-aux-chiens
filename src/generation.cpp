@@ -11,28 +11,27 @@
 
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const &params)
 {
-    const int WIDTH = 100;
-    const int HEIGHT = 100;
+    const int WIDTH = 1;
+    const int HEIGHT = 1;
     // std::vector<glm::vec2> grid = std::vector<glm::vec2>(1000, {-1, -1}); // background grid for storing samples and accelerating spatial searches (-1 = no samples)
     const int nbCols = WIDTH / params.cellSize;
     const int nbRows = HEIGHT / params.cellSize;
-    
-    std::vector<glm::vec2> positions{};
+
+    std::vector<glm::vec2> positions(nbCols * nbRows, {});
     std::vector<glm::vec2> activeList{};
     std::vector<std::vector<int>> grid(nbRows, std::vector<int>(nbCols, -1)); // background grid for storing samples and accelerating spatial searches (-1 = no samples)
     glm::vec2 randomInitPos = {static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX), static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX)};
 
-    
-    positions.reserve(1000);
-    positions.emplace_back(randomInitPos);
+    int index = static_cast<int>(randomInitPos.x / params.cellSize) + static_cast<int>(randomInitPos.y / params.cellSize) * nbCols;
+    positions[index] = randomInitPos;
     activeList.push_back(randomInitPos);
-    grid[randomInitPos.x/params.cellSize][randomInitPos.y/params.cellSize] = randomInitPos.x + randomInitPos.y * nbCols;
+    grid[randomInitPos.x / params.cellSize][randomInitPos.y / params.cellSize] = index;
 
     // TODO(student): implement Poisson disk sampling to replace the above naive random generation
     // points output should be in [0..1] range, where (0,0) is one corner of the terrain and (1,1) is the opposite corner, so they can be easily scaled to terrain size and sampled from heightmap.
     while (!activeList.empty())
     {
-        int n = GetRandomValue(0, activeList.size());
+        int n = GetRandomValue(0, activeList.size() - 1);
         glm::vec2 activePos = activeList[n];
         bool founded{false};
 
@@ -49,7 +48,8 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
             {
                 for (int j = -1; j <= 1; j++)
                 {
-                    int neighbor = grid[candidate.x / params.cellSize + i][candidate.y / params.cellSize + j];
+                    
+                    int neighbor = grid[static_cast<int>(candidate.x / params.cellSize) + i][static_cast<int>(candidate.y / params.cellSize) + j];
                     if (neighbor != -1)
                     {
                         float dist = calcDistancePoints(positions[neighbor], candidate);
@@ -65,8 +65,9 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
             {
                 founded = true;
                 activeList.push_back(candidate);
-                positions.push_back(candidate);
-                grid[(int)candidate.x / params.cellSize][(int)candidate.y / params.cellSize] = positions.size();
+                int candidateIndex = static_cast<int>(candidate.x / params.cellSize) + static_cast<int>(candidate.y / params.cellSize) * nbCols;
+                positions[candidateIndex] = candidate;
+                grid[static_cast<int>(candidate.x / params.cellSize)][static_cast<int>(candidate.y / params.cellSize)] = candidateIndex;
                 break;
             }
         }
