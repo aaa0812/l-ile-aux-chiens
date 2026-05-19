@@ -61,14 +61,15 @@ void drawImGui(AppContext &context)
     if (ImGui::CollapsingHeader("Bruit Fractal", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::SliderInt("Octaves", &context.octaves, 1, 10);
-        ImGui::SliderFloat("Lacunarity", &context.lacunarity, 1.0f, 3.0f);
-        ImGui::SliderFloat("Gain", &context.gain, 0.1f, 1.0f);
-        ImGui::SliderFloat("Scale", &context.imageGenerationParameters.noiseScale, 0.1f, 10.0f);
+        ImGui::SliderFloat("Lacunarity", &context.lacunarity, 1.0f, 2.0f);
+        ImGui::SliderFloat("Gain", &context.gain, 0.1f, 5.0f);
+        ImGui::SliderFloat("Scale", &context.imageGenerationParameters.noiseScale, 0.1f, 5.0f);
     }
 
     if (ImGui::Button("Appliquer"))
     {
         generateHeightmap(context);
+        regenerateMeshFromImage(context);
     }
 }
 
