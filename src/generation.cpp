@@ -8,29 +8,29 @@
 #include <iostream>
 #include <math.h>
 #include "utils/rand.hpp"
+#include <corecrt_math_defines.h>
 
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const &params)
 {
-    const int WIDTH = 1;
-    const int HEIGHT = 1;
-    const int nbCols = WIDTH / params.cellSize;
-    const int nbRows = HEIGHT / params.cellSize;
+    const float WIDTH = 1.f;
+    const float HEIGHT = 1.f;
+    const float cellSize = params.r / sqrt(2); // We pick the cell size to be bounded by r/√n, so that each grid cell will contain at most one sample
+    const int nbCols = std::ceil(WIDTH / cellSize); //on arrondit tjr au dessus pour pas avoir 2 points dans la même case
+    const int nbRows = std::ceil(HEIGHT / cellSize);
 
-    std::vector<glm::vec2> positions(nbCols * nbRows, glm::vec2{});
-    int max = 10000;
-    int count = 0;
+    std::vector<glm::vec2> positions{};
     std::vector<glm::vec2> activeList{};
     std::vector<std::vector<int>> grid(nbRows, std::vector<int>(nbCols, -1)); // background grid for storing samples and accelerating spatial searches (-1 = no samples)
     glm::vec2 randomInitPos = {GetRandomFloat(0.f, 1.f), GetRandomFloat(0.f, 1.f)};
 
-    int index = static_cast<int>(randomInitPos.x / params.cellSize) + static_cast<int>(randomInitPos.y / params.cellSize) * nbCols;
-    positions[index] = randomInitPos;
+    // int index = static_cast<int>(randomInitPos.x / cellSize) + static_cast<int>(randomInitPos.y / cellSize) * nbCols;
+    positions.push_back(randomInitPos);
     activeList.push_back(randomInitPos);
-    grid[randomInitPos.x / params.cellSize][randomInitPos.y / params.cellSize] = index;
+    grid[static_cast<int>(randomInitPos.x / cellSize)][static_cast<int>(randomInitPos.y / cellSize)] = positions.size() - 1;
 
     // TODO(student): implement Poisson disk sampling to replace the above naive random generation
     // points output should be in [0..1] range, where (0,0) is one corner of the terrain and (1,1) is the opposite corner, so they can be easily scaled to terrain size and sampled from heightmap.
-    while (activeList.size() > 0 && count < max)
+    while (activeList.size() > 0)
     {
         int n = GetRandomValue(0, activeList.size() - 1);
         glm::vec2 activePos = activeList[n];
@@ -39,41 +39,33 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
         for (int i = 0; i < params.limit; i++)
         {
             float randAngle = GetRandomFloat(0, 2 * M_PI);
-            float dist = GetRandomFloat(params.r, 2 * params.r);               // distance at which the point will be
-            glm::vec2 dir = {cos(randAngle), sin(randAngle)};                  // direction of the point
+            float dist = GetRandomFloat(params.r, 2 * params.r); // distance at which the point will be
+            glm::vec2 dir = {cos(randAngle), sin(randAngle)};    // direction of the point
 
             glm::vec2 candidate = activePos + dir * dist;
 
-            if (IsValid(candidate, params.cellSize, params.r, positions, grid))
+            if (IsValid(candidate, cellSize, params.r, positions, grid))
             {
+                positions.push_back(candidate);
                 activeList.push_back(candidate);
-                int candidateX = std::max(0.f, std::min(static_cast<float>(grid[1].size() - 1), (candidate.x / params.cellSize)));
-                int candidateY = std::max(0.f, std::min(static_cast<float>(grid[1].size() - 1), (candidate.y / params.cellSize)));
+                int candidateX = std::max(0.f, std::min(static_cast<float>(grid[1].size() - 1), static_cast<float>(candidate.x / cellSize)));
+                int candidateY = std::max(0.f, std::min(static_cast<float>(grid[1].size() - 1), static_cast<float>(candidate.y / cellSize)));
                 int candidateIndex = candidateX + candidateY * nbCols;
-                positions[candidateIndex] = candidate;
-                grid[candidateX][candidateY] = candidateIndex;
+                grid[candidateX][candidateY] = positions.size() - 1;
                 found = true;
-                count++;
+                std::cout << "là";
                 break;
             }
         }
 
         if (!found)
         {
-            activeList.erase(activeList.begin() + (n-1));
+            std::cout << "ici";
+            activeList.erase(activeList.begin() + n);
         }
-
     }
 
     return positions;
-}
-
-float calcDistancePoints(glm::vec2 p1, glm::vec2 p2)
-{
-    float dx = p2.x - p1.x;
-    float dy = p2.y - p1.y;
-
-    return sqrt((dx * dx) + (dy * dy));
 }
 
 bool IsValid(glm::vec2 candidate, float cellSize, float radius, std::vector<glm::vec2> points, std::vector<std::vector<int>> grid)
@@ -82,10 +74,10 @@ bool IsValid(glm::vec2 candidate, float cellSize, float radius, std::vector<glm:
     {
         int cellX = (int)(candidate.x / cellSize);
         int cellY = (int)(candidate.y / cellSize);
-        int searchStartX = std::max(0, cellX - 1);
-        int searchEndX = std::min(cellX + 1, static_cast<int>(grid[1].size() - 1));
-        int searchStartY = std::max(0, cellY - 1);
-        int searchEndY = std::min(cellY + 1, static_cast<int>(grid[1].size() - 1));
+        int searchStartX = std::max(0, cellX - 2);
+        int searchEndX = std::min(cellX + 2, static_cast<int>(grid[1].size() - 1));
+        int searchStartY = std::max(0, cellY - 2);
+        int searchEndY = std::min(cellY + 2, static_cast<int>(grid[1].size() - 1));
 
         for (int x{searchStartX}; x <= searchEndX; x++)
         {
@@ -94,8 +86,8 @@ bool IsValid(glm::vec2 candidate, float cellSize, float radius, std::vector<glm:
                 int pointIndex = grid[x][y];
                 if (pointIndex != -1)
                 {
-                    float sqrDst = calcDistancePoints(candidate, points[pointIndex]);
-                    if (sqrDst < radius * radius)
+                    float sqrDst = glm::distance(candidate, points[pointIndex]);
+                    if (sqrDst < radius)
                     {
                         return false;
                     }

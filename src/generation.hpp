@@ -10,6 +10,4 @@ float sampleHeightmap(AppContext const& context, float u, float v);
 
 void generateHeightmap(AppContext& context);
 
-float calcDistancePoints(glm::vec2 p1, glm::vec2 p2);
-
 bool IsValid(glm::vec2 candidate, float cellSize, float radius, std::vector<glm::vec2> points, std::vector<std::vector<int>> grid);
