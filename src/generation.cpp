@@ -8,7 +8,7 @@
 #include <iostream>
 #include <math.h>
 #include "utils/rand.hpp"
-#include <corecrt_math_defines.h>
+//#include <corecrt_math_defines.h>
 
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const &params)
 {
