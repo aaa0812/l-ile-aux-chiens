@@ -105,15 +105,26 @@ void generateObjectsPositions(AppContext &context)
 
     context.objectPositions.clear();
     context.objectPositions.reserve(positions.size());
-    for (glm::vec2 const &p : positions)
+    std::vector<int> toErase{};
+    for (int i = 0; i < positions.size(); i++)
     {
         context.objectPositions.emplace_back(
-            p.x, // x
-            p.y, // y
+            positions[i].x, // x
+            positions[i].y, // y
             // sample height from heightmap for each point (asuming positions are normalized in [0..1] range)
-            sampleHeightmap(context, p.x, p.y));
-    }
+            sampleHeightmap(context, positions[i].x, positions[i].y));
+        if(context.objectPositions[i].z < 0.3 || context.objectPositions[i].z > 0.8)
+        {
+            toErase.push_back(i);
+        }
+    }    
+    
     // TODO(student): extension - filter positions by sampled height range.
+    for (int i = toErase.size() - 1; i >= 0; i--)
+    {
+        int n = toErase[i];
+        context.objectPositions.erase(context.objectPositions.begin() + n);
+    }    
 }
 
 float sampleHeightmap(AppContext const &context, float u, float v)
