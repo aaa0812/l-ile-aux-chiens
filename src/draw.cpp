@@ -70,6 +70,7 @@ void drawImGui(AppContext &context)
     {
         generateHeightmap(context);
         regenerateMeshFromImage(context);
+        generateObjectsPositions(context);
     }
 }
 

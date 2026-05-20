@@ -6,7 +6,7 @@
 
 struct ImageGenerationParameters
 {
-    int noiseSeed{0};
+    int noiseSeed{GetRandomValue(0, 1000)};
     float noiseScale{4.0f};
     int resolution{256};
 };
