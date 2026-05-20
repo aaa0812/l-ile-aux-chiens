@@ -50,17 +50,14 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
                 activeList.push_back(candidate);
                 int candidateX = std::max(0.f, std::min(static_cast<float>(grid[1].size() - 1), static_cast<float>(candidate.x / cellSize)));
                 int candidateY = std::max(0.f, std::min(static_cast<float>(grid[1].size() - 1), static_cast<float>(candidate.y / cellSize)));
-                int candidateIndex = candidateX + candidateY * nbCols;
                 grid[candidateX][candidateY] = positions.size() - 1;
                 found = true;
-                std::cout << "là";
                 break;
             }
         }
 
         if (!found)
         {
-            std::cout << "ici";
             activeList.erase(activeList.begin() + n);
         }
     }
