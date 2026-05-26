@@ -179,33 +179,30 @@ void generateHeightmap(AppContext &context)
 
 Color calculateColors(float const &v, int const, int const)
 {
-    float const waterLimit{0.3f};
-    float const foamLimit{0.35f};
-    float const sandLimit{0.45f};
+    std::pair<float, glm::vec3> water{0.3f, {103, 119, 121}};
+    std::pair<float, glm::vec3> foam{0.35f, {189, 163, 76}};
+    std::pair<float, glm::vec3> sand{0.45f, {189, 163, 76}};
+    std::pair<float, glm::vec3> dirt{0.6f, {226, 215, 177}};
 
-    if (v < waterLimit)
+    if (v < water.first)
     {
-        return color_from({103, 119, 121});
+        return color_from(water.second); // water
     }
-    else if (v < foamLimit)
+    else if (v < foam.first)
     {
-        glm::vec3 min = {103, 119, 121};
-        glm::vec3 max = {189, 163, 76};
-        return color_from(interpolateVec(std::pair{waterLimit, min}, std::pair{foamLimit, max}, v)); // water
+        return color_from(interpolateVec(water, foam, v)); // transition
     }
-    else if (v < sandLimit)
+    else if (v < sand.first)
     {
-        return color_from({189, 163, 76}); // grass
+        return color_from(sand.second); // sand
     }
-    else if (v < 0.6f)
+    else if (v < dirt.first)
     {
-        glm::vec3 min = {189, 163, 76};
-        glm::vec3 max = {226, 215, 177};
-        return color_from(interpolateVec(std::pair{sandLimit, min}, std::pair{0.6, max}, v)); // transition
+        return color_from(interpolateVec(sand, dirt, v)); // transition
     }
     else
     {
-        return color_from({226, 215, 177}); // sand
+        return color_from(dirt.second); // dirt
     }
 }
 
