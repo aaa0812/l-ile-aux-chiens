@@ -51,6 +51,9 @@ struct AppContext
     int octaves{4};
     float lacunarity{1.f};
     float gain{1.f};
+
+    float radius{0.40f};
+    float fit{2.0f};
 };
 
 Matrix getTerrainCenteringMatrix(AppContext const &context);
