@@ -8,14 +8,14 @@
 #include <iostream>
 #include <math.h>
 #include "utils/rand.hpp"
-//#include <corecrt_math_defines.h>
+// #include <corecrt_math_defines.h>
 
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const &params)
 {
     const float WIDTH = 1.f;
     const float HEIGHT = 1.f;
-    const float cellSize = params.r / sqrt(2); // We pick the cell size to be bounded by r/√n, so that each grid cell will contain at most one sample
-    const int nbCols = std::ceil(WIDTH / cellSize); //on arrondit tjr au dessus pour pas avoir 2 points dans la même case
+    const float cellSize = params.r / sqrt(2);      // We pick the cell size to be bounded by r/√n, so that each grid cell will contain at most one sample
+    const int nbCols = std::ceil(WIDTH / cellSize); // on arrondit tjr au dessus pour pas avoir 2 points dans la même case
     const int nbRows = std::ceil(HEIGHT / cellSize);
 
     std::vector<glm::vec2> positions{};
@@ -102,26 +102,17 @@ void generateObjectsPositions(AppContext &context)
 
     context.objectPositions.clear();
     context.objectPositions.reserve(positions.size());
-    std::vector<int> toErase{};
-    for (int i = 0; i < positions.size(); i++)
+    for (glm::vec2 const &pos : positions)
     {
-        context.objectPositions.emplace_back(
-            positions[i].x, // x
-            positions[i].y, // y
-            // sample height from heightmap for each point (asuming positions are normalized in [0..1] range)
-            sampleHeightmap(context, positions[i].x, positions[i].y));
-        if(context.objectPositions[i].z < 0.3 || context.objectPositions[i].z > 0.8)
+        float z = sampleHeightmap(context, pos.x, pos.y);
+        if (z > 0.3)
         {
-            toErase.push_back(i);
+            context.objectPositions.emplace_back(
+                pos.x,
+                pos.y,
+                z);
         }
-    }    
-    
-    // TODO(student): extension - filter positions by sampled height range.
-    for (int i = toErase.size() - 1; i >= 0; i--)
-    {
-        int n = toErase[i];
-        context.objectPositions.erase(context.objectPositions.begin() + n);
-    }    
+    }
 }
 
 float sampleHeightmap(AppContext const &context, float u, float v)
