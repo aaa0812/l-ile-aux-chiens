@@ -5,6 +5,8 @@
 #include "app.hpp"
 #include "draw.hpp"
 #include "generation.hpp"
+#include <filesystem>
+#include "utils/pathUtils.hpp"
 
 int main() {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
@@ -47,6 +49,12 @@ int main() {
     // context.mesh = GenMeshHeightmap(context.image, context.terrainSize); // Generate heightmap mesh (RAM and VRAM)
     // context.model = LoadModelFromMesh(context.mesh);                  // Load model from generated mesh
     // context.model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = context.texture; // Set map diffuse texture
+    // std::filesystem::path path { pathUtils::make_absolute_path("resources/chien.glb") };
+    std::filesystem::path path { pathUtils::make_absolute_path("resources/chien.glb") };
+    std::filesystem::path textPath { pathUtils::make_absolute_path("resources/heightmap.png") };
+    context.dog = LoadModel(path.string().c_str());
+    Texture2D texture = LoadTexture(textPath.string().c_str());         // Load model texture and set material
+    context.dog.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
 
     generateHeightmap(context);
     regenerateMeshFromImage(context);

@@ -44,6 +44,10 @@ struct AppContext
     Mesh cube{};
     Material cubeMaterial{};
     float cubeScale{0.1f};
+    
+    Model dog{};
+    Material dogMaterial{};
+    float dogScale{0.1f};
 
     // Parameters for object positions generation
     PointsGenerationParameters pointsGenerationParameters;

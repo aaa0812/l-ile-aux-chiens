@@ -40,6 +40,12 @@ void unload(AppContext &context)
         UnloadMesh(context.cube);
         context.cube = {};
     }
+
+    if (context.dog.meshCount > 0)
+    {
+        UnloadModel(context.dog);
+        context.dog = {};
+    }
 }
 
 Matrix getTerrainCenteringMatrix(AppContext const &context)
