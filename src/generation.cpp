@@ -8,14 +8,14 @@
 #include <iostream>
 #include <math.h>
 #include "utils/rand.hpp"
-//#include <corecrt_math_defines.h>
+// #include <corecrt_math_defines.h>
 
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const &params)
 {
     const float WIDTH = 1.f;
     const float HEIGHT = 1.f;
-    const float cellSize = params.r / sqrt(2); // We pick the cell size to be bounded by r/√n, so that each grid cell will contain at most one sample
-    const int nbCols = std::ceil(WIDTH / cellSize); //on arrondit tjr au dessus pour pas avoir 2 points dans la même case
+    const float cellSize = params.r / sqrt(2);      // We pick the cell size to be bounded by r/√n, so that each grid cell will contain at most one sample
+    const int nbCols = std::ceil(WIDTH / cellSize); // on arrondit tjr au dessus pour pas avoir 2 points dans la même case
     const int nbRows = std::ceil(HEIGHT / cellSize);
 
     std::vector<glm::vec2> positions{};
@@ -102,26 +102,17 @@ void generateObjectsPositions(AppContext &context)
 
     context.objectPositions.clear();
     context.objectPositions.reserve(positions.size());
-    std::vector<int> toErase{};
-    for (int i = 0; i < positions.size(); i++)
+    for (glm::vec2 const &pos : positions)
     {
-        context.objectPositions.emplace_back(
-            positions[i].x, // x
-            positions[i].y, // y
-            // sample height from heightmap for each point (asuming positions are normalized in [0..1] range)
-            sampleHeightmap(context, positions[i].x, positions[i].y));
-        if(context.objectPositions[i].z < 0.3 || context.objectPositions[i].z > 0.8)
+        float z = sampleHeightmap(context, pos.x, pos.y);
+        if (z > 0.3)
         {
-            toErase.push_back(i);
+            context.objectPositions.emplace_back(
+                pos.x,
+                pos.y,
+                z);
         }
-    }    
-    
-    // TODO(student): extension - filter positions by sampled height range.
-    for (int i = toErase.size() - 1; i >= 0; i--)
-    {
-        int n = toErase[i];
-        context.objectPositions.erase(context.objectPositions.begin() + n);
-    }    
+    }
 }
 
 float sampleHeightmap(AppContext const &context, float u, float v)
@@ -177,24 +168,46 @@ void generateHeightmap(AppContext &context)
                                                               });
 
     // exemple conversion from heightmap to color image
-    context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const &v, int const, int const)
-                                                 {
-                                                     if (v < 0.3f)
-                                                     {
-                                                         return color_from({70, 130, 180}); // water
-                                                     }
-                                                     else if (v < 0.5f)
-                                                     {
-                                                         return color_from({238, 214, 175}); // sand
-                                                     }
-                                                     else
-                                                     {
-                                                         return color_from({34, 139, 34}); // grass
-                                                     } }, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+    context.image = TransformImage<float, Color>(context.heightmapImage, calculateColors, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
 
     context.texture = LoadTextureFromImage(context.image);
     if (context.model.meshCount > 0)
     {
         context.model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = context.texture;
     }
+}
+
+Color calculateColors(float const &v, int const, int const)
+{
+    std::pair<float, glm::vec3> water{0.3f, {103, 119, 121}};
+    std::pair<float, glm::vec3> foam{0.35f, {189, 163, 76}};
+    std::pair<float, glm::vec3> sand{0.45f, {189, 163, 76}};
+    std::pair<float, glm::vec3> dirt{0.6f, {226, 215, 177}};
+
+    if (v < water.first)
+    {
+        return color_from(water.second); // water
+    }
+    else if (v < foam.first)
+    {
+        return color_from(interpolateVec(water, foam, v)); // transition
+    }
+    else if (v < sand.first)
+    {
+        return color_from(sand.second); // sand
+    }
+    else if (v < dirt.first)
+    {
+        return color_from(interpolateVec(sand, dirt, v)); // transition
+    }
+    else
+    {
+        return color_from(dirt.second); // dirt
+    }
+}
+
+glm::vec3 interpolateVec(std::pair<float, glm::vec3> min, std::pair<float, glm::vec3> max, float x)
+{
+    // interpolation formula : (y) = y1 + [(x-x1) × (y2-y1)]/ (x2-x1)
+    return min.second + ((x - min.first) * (max.second - min.second)) / (max.first - min.first);
 }
