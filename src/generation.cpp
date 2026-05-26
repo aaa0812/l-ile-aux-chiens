@@ -168,24 +168,49 @@ void generateHeightmap(AppContext &context)
                                                               });
 
     // exemple conversion from heightmap to color image
-    context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const &v, int const, int const)
-                                                 {
-                                                     if (v < 0.3f)
-                                                     {
-                                                         return color_from({70, 130, 180}); // water
-                                                     }
-                                                     else if (v < 0.5f)
-                                                     {
-                                                         return color_from({238, 214, 175}); // sand
-                                                     }
-                                                     else
-                                                     {
-                                                         return color_from({34, 139, 34}); // grass
-                                                     } }, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+    context.image = TransformImage<float, Color>(context.heightmapImage, calculateColors, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
 
     context.texture = LoadTextureFromImage(context.image);
     if (context.model.meshCount > 0)
     {
         context.model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = context.texture;
     }
+}
+
+Color calculateColors(float const &v, int const, int const)
+{
+    float const waterLimit{0.3f};
+    float const foamLimit{0.35f};
+    float const sandLimit{0.45f};
+
+    if (v < waterLimit)
+    {
+        return color_from({103, 119, 121});
+    }
+    else if (v < foamLimit)
+    {
+        glm::vec3 min = {103, 119, 121};
+        glm::vec3 max = {189, 163, 76};
+        return color_from(interpolateVec(std::pair{waterLimit, min}, std::pair{foamLimit, max}, v)); // water
+    }
+    else if (v < sandLimit)
+    {
+        return color_from({189, 163, 76}); // grass
+    }
+    else if (v < 0.6f)
+    {
+        glm::vec3 min = {189, 163, 76};
+        glm::vec3 max = {226, 215, 177};
+        return color_from(interpolateVec(std::pair{sandLimit, min}, std::pair{0.6, max}, v)); // transition
+    }
+    else
+    {
+        return color_from({226, 215, 177}); // sand
+    }
+}
+
+glm::vec3 interpolateVec(std::pair<float, glm::vec3> min, std::pair<float, glm::vec3> max, float x)
+{
+    // interpolation formula : (y) = y1 + [(x-x1) × (y2-y1)]/ (x2-x1)
+    return min.second + ((x - min.first) * (max.second - min.second)) / (max.first - min.first);
 }
