@@ -18,7 +18,7 @@ void draw3DScene(AppContext &context)
     Vector3 const terrainCenterOffset{terrainCentering.m12, terrainCentering.m13, terrainCentering.m14};
 
     DrawModel(context.model, terrainCenterOffset, 1.0f, WHITE);
-    drawCubes(context, terrainCentering);
+    drawDogs(context, terrainCentering);
     DrawGrid(20, 1.0f);
 
     EndMode3D();
@@ -35,15 +35,34 @@ void drawCubes(AppContext const &context, Matrix const &terrainCentering)
 
     for (glm::vec3 const &pos : context.objectPositions)
     {
-        Vector3 initPos = {0, 0, 0}; //need this to apply matrices
         Matrix const objectTranslation{MatrixTranslate(
             pos.x * context.terrainSize.x,
             pos.z * context.terrainSize.y + cubeHalfHeight,
             pos.y * context.terrainSize.z)};
         Matrix const centeredTranslation{MatrixMultiply(objectTranslation, terrainCentering)};
+        Matrix const scale{MatrixScale(context.cubeScale, context.cubeScale, context.cubeScale)};
+        Matrix const transform{MatrixMultiply(scale, centeredTranslation)};
+        DrawMesh(context.cube, context.cubeMaterial, transform);
+    }
+}
+
+void drawDogs(AppContext const &context, Matrix const &terrainCentering)
+{
+    if (context.objectPositions.empty())
+    {
+        return;
+    }
+
+    for (glm::vec3 const &pos : context.objectPositions)
+    {
+        Vector3 initPos = {0, 0, 0}; //need this to apply matrices
+        Matrix const objectTranslation{MatrixTranslate(
+            pos.x * context.terrainSize.x,
+            pos.z * context.terrainSize.y,
+            pos.y * context.terrainSize.z)};
+        Matrix const centeredTranslation{MatrixMultiply(objectTranslation, terrainCentering)};
         Matrix const scale{MatrixScale(context.dogScale, context.dogScale, context.dogScale)};
         Matrix const transform{MatrixMultiply(scale, centeredTranslation)};
-        // DrawMesh(context.cube, context.cubeMaterial, transform);
         Vector3 dogPos = Vector3Transform(initPos, transform); //apply matrices to Vector3
         DrawModel(context.dog, dogPos, context.dogScale, WHITE);
     }
