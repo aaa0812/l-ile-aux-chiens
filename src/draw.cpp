@@ -18,7 +18,7 @@ void draw3DScene(AppContext &context)
     Vector3 const terrainCenterOffset{terrainCentering.m12, terrainCentering.m13, terrainCentering.m14};
 
     DrawModel(context.model, terrainCenterOffset, 1.0f, WHITE);
-    drawDogs(context, terrainCentering);
+    drawTrees(context, terrainCentering);
     DrawGrid(20, 1.0f);
 
     EndMode3D();
@@ -65,6 +65,28 @@ void drawDogs(AppContext const &context, Matrix const &terrainCentering)
         Matrix const transform{MatrixMultiply(scale, centeredTranslation)};
         Vector3 dogPos = Vector3Transform(initPos, transform); //apply matrices to Vector3
         DrawModel(context.dog, dogPos, context.dogScale, WHITE);
+    }
+}
+
+void drawTrees(AppContext const &context, Matrix const &terrainCentering)
+{
+    if (context.objectPositions.empty())
+    {
+        return;
+    }
+
+    for (glm::vec3 const &pos : context.objectPositions)
+    {
+        Vector3 initPos = {0, 0, 0}; //need this to apply matrices
+        Matrix const objectTranslation{MatrixTranslate(
+            pos.x * context.terrainSize.x,
+            pos.z * context.terrainSize.y,
+            pos.y * context.terrainSize.z)};
+        Matrix const centeredTranslation{MatrixMultiply(objectTranslation, terrainCentering)};
+        Matrix const scale{MatrixScale(context.treeScale, context.treeScale, context.treeScale)};
+        Matrix const transform{MatrixMultiply(scale, centeredTranslation)};
+        Vector3 treePos = Vector3Transform(initPos, transform); //apply matrices to Vector3
+        DrawModel(context.tree, treePos, context.treeScale, WHITE);
     }
 }
 

@@ -15,7 +15,7 @@ struct PointsGenerationParameters
 {
     // TODO(student): add parameters for points generation (ex: poisson disk radius, etc).
 
-    float r{0.05}; // minimum distance between samples
+    float r{0.025}; // minimum distance between samples
     int limit{30};       // limit of samples to choose before rejection (constant k)
 };
 
@@ -48,6 +48,10 @@ struct AppContext
     Model dog{};
     Material dogMaterial{};
     float dogScale{0.1f};
+
+    Model tree{};
+    Material treeMaterial{};
+    float treeScale{0.5f};
 
     // Parameters for object positions generation
     PointsGenerationParameters pointsGenerationParameters;

@@ -105,7 +105,7 @@ void generateObjectsPositions(AppContext &context)
     for (glm::vec2 const &pos : positions)
     {
         float z = sampleHeightmap(context, pos.x, pos.y);
-        if (z > 0.3)
+        if (z > 0.4)
         {
             context.objectPositions.emplace_back(
                 pos.x,
