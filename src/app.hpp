@@ -2,6 +2,7 @@
 
 #include "raylib.h"
 #include "glm/glm.hpp"
+#include "utils/rand.hpp"
 #include <vector>
 
 struct ImageGenerationParameters
@@ -15,8 +16,15 @@ struct PointsGenerationParameters
 {
     // TODO(student): add parameters for points generation (ex: poisson disk radius, etc).
 
-    float r{0.05}; // minimum distance between samples
-    int limit{30};       // limit of samples to choose before rejection (constant k)
+    float r{0.03}; // minimum distance between samples
+    int limit{30}; // limit of samples to choose before rejection (constant k)
+};
+
+struct ObjectParams
+{
+    glm::vec3 pos{};
+    int angle{};
+    float scale{};
 };
 
 struct AppContext
@@ -38,12 +46,20 @@ struct AppContext
     Mesh mesh{};
     Model model{};
 
-    std::vector<glm::vec3> objectPositions{};
+    std::vector<ObjectParams> objectParams{};
 
     // A simple cube mesh and material we use to draw objects on the terrain.
     Mesh cube{};
     Material cubeMaterial{};
     float cubeScale{0.1f};
+
+    Model dog{};
+    Material dogMaterial{};
+    float dogScale{0.1f};
+
+    Model tree{};
+    Material treeMaterial{};
+    float treeScale{0.5f};
 
     // Parameters for object positions generation
     PointsGenerationParameters pointsGenerationParameters;

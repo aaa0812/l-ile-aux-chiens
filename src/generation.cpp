@@ -100,17 +100,14 @@ void generateObjectsPositions(AppContext &context)
 {
     std::vector<glm::vec2> const positions{generate2DPositions(context.pointsGenerationParameters)};
 
-    context.objectPositions.clear();
-    context.objectPositions.reserve(positions.size());
+    context.objectParams.clear();
+    context.objectParams.reserve(positions.size());
     for (glm::vec2 const &pos : positions)
     {
         float z = sampleHeightmap(context, pos.x, pos.y);
-        if (z > 0.3)
+        if (z > 0.4 && z < 0.7)
         {
-            context.objectPositions.emplace_back(
-                pos.x,
-                pos.y,
-                z);
+            context.objectParams.emplace_back(glm::vec3{pos.x, pos.y, z}, GetRandomValue(0, 360), GetRandomFloat(0.2, 0.5));
         }
     }
 }
@@ -187,10 +184,10 @@ void generateHeightmap(AppContext &context)
 
 Color calculateColors(float const &v, int const, int const)
 {
-    std::pair<float, glm::vec3> water{0.3f, {103, 119, 121}};
-    std::pair<float, glm::vec3> foam{0.35f, {189, 163, 76}};
-    std::pair<float, glm::vec3> sand{0.45f, {189, 163, 76}};
-    std::pair<float, glm::vec3> dirt{0.6f, {226, 215, 177}};
+    std::pair<float, glm::vec3> water{0.3f, {69, 75, 161}};   // water from 0 to 0.3
+    std::pair<float, glm::vec3> foam{0.35f, {130, 170, 201}}; // transition from 0.3 to 0.35
+    std::pair<float, glm::vec3> sand{0.45f, {130, 170, 201}}; // beach from 0.35 to 0.45
+    std::pair<float, glm::vec3> dirt{0.6f, {227, 230, 243}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6)
 
     if (v < water.first)
     {
