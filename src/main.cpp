@@ -57,7 +57,10 @@ int main() {
     context.dog.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
     
     std::filesystem::path treePath { pathUtils::make_absolute_path("resources/snow-dead-tree.glb") };
-    context.tree = LoadModel(treePath.string().c_str());
+    context.tree1 = LoadModel(treePath.string().c_str());
+
+    std::filesystem::path tree2Path { pathUtils::make_absolute_path("resources/snow-dead-tree2.glb") };
+    context.tree2 = LoadModel(tree2Path.string().c_str());
 
     std::filesystem::path boatPath { pathUtils::make_absolute_path("resources/boat.glb") };
     context.boat = LoadModel(boatPath.string().c_str());

@@ -22,7 +22,8 @@ struct PointsGenerationParameters
 
 enum Nature
 {
-    TREE,
+    TREE1,
+    TREE2,
     BOAT
 };
 struct ObjectParams
@@ -30,7 +31,7 @@ struct ObjectParams
     glm::vec3 pos{};
     int angle{};
     float scale{};
-    Nature nature{TREE};
+    Nature nature{TREE1};
 };
 
 struct AppContext
@@ -63,8 +64,8 @@ struct AppContext
     Material dogMaterial{};
     float dogScale{0.1f};
 
-    Model tree{};
-    Material treeMaterial{};
+    Model tree1{};
+    Model tree2{};
     
     Model boat{};
 

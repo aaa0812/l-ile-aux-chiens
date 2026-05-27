@@ -47,10 +47,16 @@ void unload(AppContext &context)
         context.dog = {};
     }
     
-    if (context.tree.meshCount > 0)
+    if (context.tree1.meshCount > 0)
     {
-        UnloadModel(context.tree);
-        context.tree = {};
+        UnloadModel(context.tree1);
+        context.tree1 = {};
+    }
+
+    if (context.tree2.meshCount > 0)
+    {
+        UnloadModel(context.tree2);
+        context.tree2 = {};
     }
 
     if (context.boat.meshCount > 0)
