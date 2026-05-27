@@ -52,6 +52,12 @@ void unload(AppContext &context)
         UnloadModel(context.tree);
         context.tree = {};
     }
+
+    if (context.boat.meshCount > 0)
+    {
+        UnloadModel(context.boat);
+        context.boat = {};
+    }
 }
 
 Matrix getTerrainCenteringMatrix(AppContext const &context)

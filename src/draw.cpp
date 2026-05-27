@@ -18,7 +18,7 @@ void draw3DScene(AppContext &context)
     Vector3 const terrainCenterOffset{terrainCentering.m12, terrainCentering.m13, terrainCentering.m14};
 
     DrawModel(context.model, terrainCenterOffset, 1.0f, WHITE);
-    drawTrees(context, terrainCentering);
+    drawObjects(context, terrainCentering);
     DrawGrid(20, 1.0f);
 
     EndMode3D();
@@ -68,7 +68,7 @@ void drawDogs(AppContext const &context, Matrix const &terrainCentering)
     }
 }
 
-void drawTrees(AppContext const &context, Matrix const &terrainCentering)
+void drawObjects(AppContext const &context, Matrix const &terrainCentering)
 {
     if (context.objectParams.empty())
     {
@@ -83,12 +83,19 @@ void drawTrees(AppContext const &context, Matrix const &terrainCentering)
             obj.pos.z * context.terrainSize.y,
             obj.pos.y * context.terrainSize.z)};
         Matrix const centeredTranslation{MatrixMultiply(objectTranslation, terrainCentering)};
-        // Matrix const scale{MatrixScale(context.treeScale, context.treeScale, context.treeScale)};
-        // Matrix const transform{MatrixMultiply(centeredTranslation,rotate)};
-        // transform = MatrixMultiply(rotate, transform);
-        Vector3 treePos = Vector3Transform(initPos, centeredTranslation); // apply matrices to Vector3
-        DrawModelEx(context.tree, treePos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
-        // DrawModel(context.tree, treePos, (context.treeScale), WHITE);
+        Vector3 objPos = Vector3Transform(initPos, centeredTranslation); // apply matrices to Vector3
+        switch (obj.nature)
+        {
+        case TREE:
+            DrawModelEx(context.tree, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
+            break;
+        case BOAT:
+            DrawModelEx(context.boat, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
+            break;
+
+        default:
+            break;
+        }
     }
 }
 
@@ -110,6 +117,7 @@ void drawImGui(AppContext &context)
         ImGui::SliderFloat("Lacunarity", &context.lacunarity, 1.0f, 2.0f);
         ImGui::SliderFloat("Gain", &context.gain, 0.1f, 5.0f);
         ImGui::SliderFloat("Scale", &context.imageGenerationParameters.noiseScale, 0.1f, 5.0f);
+        ImGui::SliderInt("Resolution", &context.imageGenerationParameters.resolution, 26, 256);
     }
 
     if (ImGui::Button("Appliquer"))

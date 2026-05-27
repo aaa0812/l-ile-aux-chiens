@@ -59,6 +59,9 @@ int main() {
     std::filesystem::path treePath { pathUtils::make_absolute_path("resources/snow-dead-tree.glb") };
     context.tree = LoadModel(treePath.string().c_str());
 
+    std::filesystem::path boatPath { pathUtils::make_absolute_path("resources/boat.glb") };
+    context.boat = LoadModel(boatPath.string().c_str());
+
     generateHeightmap(context);
     regenerateMeshFromImage(context);
     generateObjectsPositions(context);

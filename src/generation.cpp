@@ -110,6 +110,21 @@ void generateObjectsPositions(AppContext &context)
             context.objectParams.emplace_back(glm::vec3{pos.x, pos.y, z}, GetRandomValue(0, 360), GetRandomFloat(0.2, 0.5));
         }
     }
+    generateBoat(context, positions);
+}
+
+void generateBoat(AppContext& context, std::vector<glm::vec2> const& positions)
+{
+    int index{};
+    float z{};
+
+    do
+    {
+        index = GetRandomValue(0, positions.size()-1);
+        z = sampleHeightmap(context, positions[index].x, positions[index].y);
+    } while (z > 0.3);
+    
+    context.objectParams.emplace_back(glm::vec3{positions[index].x, positions[index].y, z}, GetRandomValue(0, 360), 2.f, BOAT);
 }
 
 float sampleHeightmap(AppContext const &context, float u, float v)

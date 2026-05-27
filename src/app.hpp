@@ -20,11 +20,17 @@ struct PointsGenerationParameters
     int limit{30}; // limit of samples to choose before rejection (constant k)
 };
 
+enum Nature
+{
+    TREE,
+    BOAT
+};
 struct ObjectParams
 {
     glm::vec3 pos{};
     int angle{};
     float scale{};
+    Nature nature{TREE};
 };
 
 struct AppContext
@@ -59,7 +65,8 @@ struct AppContext
 
     Model tree{};
     Material treeMaterial{};
-    float treeScale{0.5f};
+    
+    Model boat{};
 
     // Parameters for object positions generation
     PointsGenerationParameters pointsGenerationParameters;
