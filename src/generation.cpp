@@ -136,6 +136,14 @@ float sampleHeightmap(AppContext const &context, float u, float v)
     return static_cast<float>(c.r) / 255.0f;
 }
 
+float masqueRadial(glm::vec2 const &p, float radius, float fit)
+{
+    glm::vec2 center = glm::vec2(0.5f, 0.5f);
+    float d_center = glm::distance(p, center);
+    float masque = 1.0f / (radius * sqrt(2.0f * M_PI)) * exp(-pow(d_center, 2.0f) * fit / (2.0f * pow(radius, 2.0f))); // fonction gaussienne
+    return masque;
+}
+
 void generateHeightmap(AppContext &context)
 {
 
@@ -162,9 +170,9 @@ void generateHeightmap(AppContext &context)
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
                                                               [&](glm::vec2 const &p) -> float
                                                               {
-                                                                  // TODO(student): implement stack based noise and island mask
-
-                                                                  return (octaveNoise(p, perlinNoiseSeeded, context.octaves, context.lacunarity, context.gain, context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
+                                                                  //     TODO(student): implement stack based noise and island mask
+                                                                  //     return (perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
+                                                                  return (octaveNoise(p, perlinNoiseSeeded, context.octaves, context.lacunarity, context.gain, context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f) * masqueRadial(p, context.radius, context.fit);
                                                               });
 
     // exemple conversion from heightmap to color image
