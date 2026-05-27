@@ -56,7 +56,7 @@ int main() {
     Texture2D texture = LoadTexture(textPath.string().c_str());         // Load model texture and set material
     context.dog.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
     
-    std::filesystem::path treePath { pathUtils::make_absolute_path("resources/tree1.glb") };
+    std::filesystem::path treePath { pathUtils::make_absolute_path("resources/snow-dead-tree.glb") };
     context.tree = LoadModel(treePath.string().c_str());
 
     generateHeightmap(context);

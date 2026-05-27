@@ -26,19 +26,19 @@ void draw3DScene(AppContext &context)
 
 void drawCubes(AppContext const &context, Matrix const &terrainCentering)
 {
-    if (context.objectPositions.empty())
+    if (context.objectParams.empty())
     {
         return;
     }
 
     float const cubeHalfHeight{0.5f * context.cubeScale};
 
-    for (glm::vec3 const &pos : context.objectPositions)
+    for (ObjectParams const &obj : context.objectParams)
     {
         Matrix const objectTranslation{MatrixTranslate(
-            pos.x * context.terrainSize.x,
-            pos.z * context.terrainSize.y + cubeHalfHeight,
-            pos.y * context.terrainSize.z)};
+            obj.pos.x * context.terrainSize.x,
+            obj.pos.z * context.terrainSize.y + cubeHalfHeight,
+            obj.pos.y * context.terrainSize.z)};
         Matrix const centeredTranslation{MatrixMultiply(objectTranslation, terrainCentering)};
         Matrix const scale{MatrixScale(context.cubeScale, context.cubeScale, context.cubeScale)};
         Matrix const transform{MatrixMultiply(scale, centeredTranslation)};
@@ -48,45 +48,47 @@ void drawCubes(AppContext const &context, Matrix const &terrainCentering)
 
 void drawDogs(AppContext const &context, Matrix const &terrainCentering)
 {
-    if (context.objectPositions.empty())
+    if (context.objectParams.empty())
     {
         return;
     }
 
-    for (glm::vec3 const &pos : context.objectPositions)
+    for (ObjectParams const &obj : context.objectParams)
     {
-        Vector3 initPos = {0, 0, 0}; //need this to apply matrices
+        Vector3 initPos = {0, 0, 0}; // need this to apply matrices
         Matrix const objectTranslation{MatrixTranslate(
-            pos.x * context.terrainSize.x,
-            pos.z * context.terrainSize.y,
-            pos.y * context.terrainSize.z)};
+            obj.pos.x * context.terrainSize.x,
+            obj.pos.z * context.terrainSize.y,
+            obj.pos.y * context.terrainSize.z)};
         Matrix const centeredTranslation{MatrixMultiply(objectTranslation, terrainCentering)};
         Matrix const scale{MatrixScale(context.dogScale, context.dogScale, context.dogScale)};
         Matrix const transform{MatrixMultiply(scale, centeredTranslation)};
-        Vector3 dogPos = Vector3Transform(initPos, transform); //apply matrices to Vector3
+        Vector3 dogPos = Vector3Transform(initPos, transform); // apply matrices to Vector3
         DrawModel(context.dog, dogPos, context.dogScale, WHITE);
     }
 }
 
 void drawTrees(AppContext const &context, Matrix const &terrainCentering)
 {
-    if (context.objectPositions.empty())
+    if (context.objectParams.empty())
     {
         return;
     }
 
-    for (glm::vec3 const &pos : context.objectPositions)
+    for (ObjectParams const &obj : context.objectParams)
     {
-        Vector3 initPos = {0, 0, 0}; //need this to apply matrices
+        Vector3 initPos = {0, 0, 0}; // need this to apply matrices
         Matrix const objectTranslation{MatrixTranslate(
-            pos.x * context.terrainSize.x,
-            pos.z * context.terrainSize.y,
-            pos.y * context.terrainSize.z)};
+            obj.pos.x * context.terrainSize.x,
+            obj.pos.z * context.terrainSize.y,
+            obj.pos.y * context.terrainSize.z)};
         Matrix const centeredTranslation{MatrixMultiply(objectTranslation, terrainCentering)};
-        Matrix const scale{MatrixScale(context.treeScale, context.treeScale, context.treeScale)};
-        Matrix const transform{MatrixMultiply(scale, centeredTranslation)};
-        Vector3 treePos = Vector3Transform(initPos, transform); //apply matrices to Vector3
-        DrawModel(context.tree, treePos, context.treeScale, WHITE);
+        // Matrix const scale{MatrixScale(context.treeScale, context.treeScale, context.treeScale)};
+        // Matrix const transform{MatrixMultiply(centeredTranslation,rotate)};
+        // transform = MatrixMultiply(rotate, transform);
+        Vector3 treePos = Vector3Transform(initPos, centeredTranslation); // apply matrices to Vector3
+        DrawModelEx(context.tree, treePos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
+        // DrawModel(context.tree, treePos, (context.treeScale), WHITE);
     }
 }
 
@@ -133,11 +135,11 @@ void drawRaylibUI(AppContext &context)
     DrawRectangleLines(screenWidth - wanted_size - 20, 20, wanted_size, wanted_size, GREEN);
 
     // draw positions on top of the heightmap
-    for (auto const &pos : context.objectPositions)
+    for (auto const &pos : context.objectParams)
     {
         // Remap normalized coordinates [0..1] to the preview image in screen space.
-        float const px{preview_x + Clamp(pos.x, 0.0f, 1.0f) * preview_w};
-        float const py{preview_y + Clamp(pos.y, 0.0f, 1.0f) * preview_h};
+        float const px{preview_x + Clamp(pos.pos.x, 0.0f, 1.0f) * preview_w};
+        float const py{preview_y + Clamp(pos.pos.y, 0.0f, 1.0f) * preview_h};
 
         DrawCircleV({px, py}, 2.0f, RED);
     }
