@@ -47,16 +47,52 @@ void unload(AppContext &context)
         context.dog = {};
     }
     
-    if (context.tree1.meshCount > 0)
+    if (context.winterTree1.meshCount > 0)
     {
-        UnloadModel(context.tree1);
-        context.tree1 = {};
+        UnloadModel(context.winterTree1);
+        context.winterTree1 = {};
     }
 
-    if (context.tree2.meshCount > 0)
+    if (context.winterTree2.meshCount > 0)
     {
-        UnloadModel(context.tree2);
-        context.tree2 = {};
+        UnloadModel(context.winterTree2);
+        context.winterTree2 = {};
+    }
+    
+    if (context.summerTree1.meshCount > 0)
+    {
+        UnloadModel(context.summerTree1);
+        context.summerTree1 = {};
+    }
+    
+    if (context.summerTree2.meshCount > 0)
+    {
+        UnloadModel(context.summerTree2);
+        context.summerTree2 = {};
+    }
+
+    if (context.springTree1.meshCount > 0)
+    {
+        UnloadModel(context.springTree1);
+        context.springTree1 = {};
+    }
+    
+    if (context.springTree2.meshCount > 0)
+    {
+        UnloadModel(context.springTree2);
+        context.springTree2 = {};
+    }
+    
+    if (context.autumnTree1.meshCount > 0)
+    {
+        UnloadModel(context.autumnTree1);
+        context.autumnTree1 = {};
+    }
+    
+    if (context.autumnTree2.meshCount > 0)
+    {
+        UnloadModel(context.autumnTree2);
+        context.autumnTree2 = {};
     }
 
     if (context.boat.meshCount > 0)

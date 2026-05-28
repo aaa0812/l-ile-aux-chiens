@@ -86,11 +86,11 @@ void drawObjects(AppContext const &context, Matrix const &terrainCentering)
         Vector3 objPos = Vector3Transform(initPos, centeredTranslation); // apply matrices to Vector3
         switch (obj.nature)
         {
-        case TREE1:
-            DrawModelEx(context.tree1, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
+        case WINTER_TREE1:
+            DrawModelEx(context.winterTree1, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
             break;
-        case TREE2:
-            DrawModelEx(context.tree2, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
+        case WINTER_TREE2:
+            DrawModelEx(context.winterTree2, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
             break;
         case BOAT:
             DrawModelEx(context.boat, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);

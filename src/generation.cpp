@@ -108,7 +108,7 @@ void generateObjectsPositions(AppContext &context)
         if (z > 0.4 && z < 0.7)
         {
             int rand = GetRandomValue(0, 1);
-            context.objectParams.emplace_back(glm::vec3{pos.x, pos.y, z}, GetRandomValue(0, 360), GetRandomFloat(0.2, 0.5), rand == 0 ? TREE1 : TREE2);
+            context.objectParams.emplace_back(glm::vec3{pos.x, pos.y, z}, GetRandomValue(0, 360), GetRandomFloat(0.2, 0.5), rand == 0 ? WINTER_TREE1 : WINTER_TREE2);
         }
     }
     generateBoat(context, positions);
