@@ -26,7 +26,9 @@ enum Nature
     SUMMER_TREE2,
     WINTER_TREE1,
     WINTER_TREE2,
-    BOAT
+    BOAT,
+    CANDYCANE,
+    LOLIPOP
 };
 struct ObjectParams
 {
@@ -77,6 +79,9 @@ struct AppContext
     
     Model springTree1{};
     Model springTree2{};
+
+    Model candyCane{};
+    Model lolipop{};
     
     Model boat{};
 

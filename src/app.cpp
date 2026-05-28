@@ -100,6 +100,17 @@ void unload(AppContext &context)
         UnloadModel(context.boat);
         context.boat = {};
     }
+    
+    if (context.lolipop.meshCount > 0)
+    {
+        UnloadModel(context.lolipop);
+        context.lolipop = {};
+    }
+    if (context.candyCane.meshCount > 0)
+    {
+        UnloadModel(context.candyCane);
+        context.candyCane = {};
+    }
 }
 
 Matrix getTerrainCenteringMatrix(AppContext const &context)

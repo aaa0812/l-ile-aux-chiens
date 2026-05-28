@@ -50,11 +50,11 @@ int main() {
     // context.model = LoadModelFromMesh(context.mesh);                  // Load model from generated mesh
     // context.model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = context.texture; // Set map diffuse texture
     // std::filesystem::path path { pathUtils::make_absolute_path("resources/chien.glb") };
-    std::filesystem::path path { pathUtils::make_absolute_path("resources/chien.glb") };
+    /* std::filesystem::path path { pathUtils::make_absolute_path("resources/chien.glb") };
     std::filesystem::path textPath { pathUtils::make_absolute_path("resources/heightmap.png") };
     context.dog = LoadModel(path.string().c_str());
     Texture2D texture = LoadTexture(textPath.string().c_str());         // Load model texture and set material
-    context.dog.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
+    context.dog.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture; */
     
     std::filesystem::path treePath { pathUtils::make_absolute_path("resources/snow-dead-tree.glb") };
     context.winterTree1 = LoadModel(treePath.string().c_str());
@@ -64,6 +64,11 @@ int main() {
 
     std::filesystem::path boatPath { pathUtils::make_absolute_path("resources/boat.glb") };
     context.boat = LoadModel(boatPath.string().c_str());
+    
+    std::filesystem::path candycanePath { pathUtils::make_absolute_path("resources/models/candy.glb") };
+    std::filesystem::path lolipopPath { pathUtils::make_absolute_path("resources/models/lolipop.glb") };
+    context.candyCane = LoadModel(candycanePath.string().c_str());
+    context.lolipop = LoadModel(lolipopPath.string().c_str());
 
     generateHeightmap(context);
     regenerateMeshFromImage(context);

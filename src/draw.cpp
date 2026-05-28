@@ -92,6 +92,10 @@ void drawObjects(AppContext const &context, Matrix const &terrainCentering)
         case WINTER_TREE2:
             DrawModelEx(context.winterTree2, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
             break;
+        case CANDYCANE:
+            break;
+        case LOLIPOP:
+            break;
         case BOAT:
             DrawModelEx(context.boat, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
             break;
