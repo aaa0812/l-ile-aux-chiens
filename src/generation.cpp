@@ -189,7 +189,7 @@ void generateHeightmap(AppContext &context)
                                                               });
 
     // exemple conversion from heightmap to color image
-    context.image = TransformImage<float, Color>(context.heightmapImage, calculateColors, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+    context.image = TransformImage<float, Color, Colors>(context.heightmapImage, calculateColors, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8, context.islandColors);
 
     context.texture = LoadTextureFromImage(context.image);
     if (context.model.meshCount > 0)
@@ -198,38 +198,32 @@ void generateHeightmap(AppContext &context)
     }
 }
 
-Color calculateColors(float const &v, int const, int const)
+Color calculateColors(float const &v, int const, int const, Colors const& colors)
 {
     /* std::pair<float, glm::vec3> water{0.3f, {69, 75, 161}};   // water from 0 to 0.3
     std::pair<float, glm::vec3> foam{0.35f, {130, 170, 201}}; // transition from 0.3 to 0.35
     std::pair<float, glm::vec3> sand{0.45f, {130, 170, 201}}; // beach from 0.35 to 0.45
     std::pair<float, glm::vec3> dirt{0.6f, {227, 230, 243}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6) */
-    
-    std::pair<float, glm::vec3> darkWater{0.0f, {12, 9, 22}};   // water from 0 to 0.3
-    std::pair<float, glm::vec3> lightWater{0.3f, {119, 12, 9}};   // water from 0 to 0.3
-    std::pair<float, glm::vec3> foam{0.35f, {12, 9, 22}}; // transition from 0.3 to 0.35
-    std::pair<float, glm::vec3> sand{0.4f, {12, 9, 22}}; // beach from 0.35 to 0.45
-    std::pair<float, glm::vec3> dirt{0.8f, {38, 38, 43}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6)
 
-    if (v < lightWater.first)
+    if (v < colors.lightWater.first)
     {
-        return color_from(interpolateVec(darkWater, lightWater, v)); // water
+        return color_from(interpolateVec(colors.darkWater, colors.lightWater, v)); // water
     }
-    else if (v < foam.first)
+    else if (v < colors.foam.first)
     {
-        return color_from(interpolateVec(lightWater, foam, v)); // transition
+        return color_from(interpolateVec(colors.lightWater, colors.foam, v)); // transition
     }
-    else if (v < sand.first)
+    else if (v < colors.sand.first)
     {
-        return color_from(interpolateVec(foam, sand, v)); // sand
+        return color_from(interpolateVec(colors.foam, colors.sand, v)); // sand
     }
-    else if (v < dirt.first)
+    else if (v < colors.dirt.first)
     {
-        return color_from(interpolateVec(sand, dirt, v)); // transition
+        return color_from(interpolateVec(colors.sand, colors.dirt, v)); // transition
     }
     else
     {
-        return color_from(dirt.second); // dirt
+        return color_from(colors.dirt.second); // dirt
     }
 }
 

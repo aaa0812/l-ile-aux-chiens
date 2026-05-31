@@ -113,6 +113,16 @@ void drawImGui(AppContext &context)
         generateObjectsPositions(context);
     }
 
+    if (ImGui::CollapsingHeader("Couleurs", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        if (ImGui::Checkbox("Mode light", &context.islandColors.lightMode))
+        {
+            context.islandColors.lightMode ? context.islandColors.setColorsToDark() : context.islandColors.setColorsToLight();
+            generateHeightmap(context);
+            //regenerateMeshFromImage(context);
+        }
+    }
+
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);

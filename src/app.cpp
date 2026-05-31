@@ -130,18 +130,38 @@ void regenerateMeshFromImage(AppContext &context)
     }
 
     // We need to convert the heightmap image to a format that GenMeshHeightmap can use (uncompressed R8G8B8A8), so we create a new image and convert the height values to grayscale colors.
-    Image const meshHeightImage = TransformImage<float, Color>(
+    Image const meshHeightImage = TransformImage<float, Color, Colors>(
         context.heightmapImage,
-        [](float const &h, int const, int const)
+        [](float const &h, int const, int const, Colors const &)
         {
             unsigned char const v{static_cast<unsigned char>(Clamp(h, 0.0f, 1.0f) * 255.0f)};
             return Color{v, v, v, 255};
         },
-        PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+        PIXELFORMAT_UNCOMPRESSED_R8G8B8A8, context.islandColors);
 
     context.mesh = GenMeshHeightmap(meshHeightImage, vec_from_glm(context.terrainSize));
     UnloadImage(meshHeightImage);
     context.model = LoadModelFromMesh(context.mesh);
 
     context.model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = context.texture;
+}
+
+void Colors::setColorsToDark()
+{
+    lightMode = false;
+    darkWater = {0.0f, {12, 9, 22}};   // water from 0 to 0.3
+    lightWater = {0.3f, {119, 12, 9}};   // water from 0 to 0.3
+    foam = {0.35f, {12, 9, 22}}; // transition from 0.3 to 0.35
+    sand = {0.4f, {12, 9, 22}}; // beach from 0.35 to 0.45
+    dirt = {0.8f, {38, 38, 43}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6)
+}
+
+void Colors::setColorsToLight()
+{
+    lightMode = true;
+    darkWater = {0.0f, {250, 250, 250}};   // water from 0 to 0.3
+    lightWater = {0.3f, {250, 250, 250}};   // water from 0 to 0.3
+    foam = {0.35f, {250, 250, 250}}; // transition from 0.3 to 0.35
+    sand = {0.4f, {250, 250, 250}}; // beach from 0.35 to 0.45
+    dirt = {0.8f, {250, 250, 250}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6)
 }

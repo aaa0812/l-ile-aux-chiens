@@ -51,8 +51,8 @@ Image GenImageFromNoiseFunction(int width, int height, PixelFormat format, std::
 }
 
 // Transforms an image by applying a function to each pixel. This function creates a new image with the same dimensions as the input image, user is responsible for freeing the memory of the output image data. The transform function takes the input pixel value and its coordinates as arguments and returns the transformed pixel value.
-template <typename InputType, typename OutputType>
-inline Image TransformImage(Image const& image, std::function<OutputType(InputType const&, int const x, int const y)> transformFunction, PixelFormat outputFormat) {
+template <typename InputType, typename OutputType, typename InputType2>
+inline Image TransformImage(Image const& image, std::function<OutputType(InputType const&, int const x, int const y, InputType2 const& )> transformFunction, PixelFormat outputFormat, InputType2 const& colors) {
     OutputType* outputData = static_cast<OutputType*>(RL_MALLOC(image.width * image.height *sizeof(OutputType)));
 
     InputType const* InputData = static_cast<InputType*>(image.data);
@@ -61,7 +61,7 @@ inline Image TransformImage(Image const& image, std::function<OutputType(InputTy
     {
         for (int x = 0; x < image.width; ++x)
         {
-            outputData[y*image.width + x] = transformFunction(InputData[y*image.width + x], x, y);
+            outputData[y*image.width + x] = transformFunction(InputData[y*image.width + x], x, y, colors);
         }
     }
 
