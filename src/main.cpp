@@ -56,10 +56,10 @@ int main() {
     Texture2D texture = LoadTexture(textPath.string().c_str());         // Load model texture and set material
     context.dog.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture; */
     
-    std::filesystem::path treePath { pathUtils::make_absolute_path("resources/snow-dead-tree.glb") };
+    std::filesystem::path treePath { pathUtils::make_absolute_path("resources/models/dead-tree.glb") };
     context.winterTree1 = LoadModel(treePath.string().c_str());
 
-    std::filesystem::path tree2Path { pathUtils::make_absolute_path("resources/snow-dead-tree2.glb") };
+    std::filesystem::path tree2Path { pathUtils::make_absolute_path("resources/models/dead-tree2.glb") };
     context.winterTree2 = LoadModel(tree2Path.string().c_str());
 
     std::filesystem::path boatPath { pathUtils::make_absolute_path("resources/boat.glb") };
