@@ -200,22 +200,28 @@ void generateHeightmap(AppContext &context)
 
 Color calculateColors(float const &v, int const, int const)
 {
-    std::pair<float, glm::vec3> water{0.3f, {69, 75, 161}};   // water from 0 to 0.3
+    /* std::pair<float, glm::vec3> water{0.3f, {69, 75, 161}};   // water from 0 to 0.3
     std::pair<float, glm::vec3> foam{0.35f, {130, 170, 201}}; // transition from 0.3 to 0.35
     std::pair<float, glm::vec3> sand{0.45f, {130, 170, 201}}; // beach from 0.35 to 0.45
-    std::pair<float, glm::vec3> dirt{0.6f, {227, 230, 243}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6)
+    std::pair<float, glm::vec3> dirt{0.6f, {227, 230, 243}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6) */
+    
+    std::pair<float, glm::vec3> darkWater{0.0f, {12, 9, 22}};   // water from 0 to 0.3
+    std::pair<float, glm::vec3> lightWater{0.3f, {20, 19, 37}};   // water from 0 to 0.3
+    std::pair<float, glm::vec3> foam{0.35f, {68, 65, 93}}; // transition from 0.3 to 0.35
+    std::pair<float, glm::vec3> sand{0.4f, {12, 9, 22}}; // beach from 0.35 to 0.45
+    std::pair<float, glm::vec3> dirt{0.8f, {38, 38, 43}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6)
 
-    if (v < water.first)
+    if (v < lightWater.first)
     {
-        return color_from(water.second); // water
+        return color_from(interpolateVec(darkWater, lightWater, v)); // water
     }
     else if (v < foam.first)
     {
-        return color_from(interpolateVec(water, foam, v)); // transition
+        return color_from(interpolateVec(lightWater, foam, v)); // transition
     }
     else if (v < sand.first)
     {
-        return color_from(sand.second); // sand
+        return color_from(interpolateVec(foam, sand, v)); // sand
     }
     else if (v < dirt.first)
     {
