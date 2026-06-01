@@ -115,11 +115,15 @@ void drawImGui(AppContext &context)
 
     if (ImGui::CollapsingHeader("Couleurs", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        if (ImGui::Checkbox("Mode light", &context.islandColors.lightMode))
+        if (ImGui::Button("Mode light"))
         {
-            context.islandColors.lightMode ? context.islandColors.setColorsToDark() : context.islandColors.setColorsToLight();
+            context.islandColors.setColorsToLight();
             generateHeightmap(context);
-            //regenerateMeshFromImage(context);
+        }
+        if (ImGui::Button("Mode Dark"))
+        {
+            context.islandColors.setColorsToDark();
+            generateHeightmap(context);
         }
     }
 

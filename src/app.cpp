@@ -159,9 +159,9 @@ void Colors::setColorsToDark()
 void Colors::setColorsToLight()
 {
     lightMode = true;
-    darkWater = {0.0f, {250, 250, 250}};   // water from 0 to 0.3
-    lightWater = {0.3f, {250, 250, 250}};   // water from 0 to 0.3
-    foam = {0.35f, {250, 250, 250}}; // transition from 0.3 to 0.35
-    sand = {0.4f, {250, 250, 250}}; // beach from 0.35 to 0.45
-    dirt = {0.8f, {250, 250, 250}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6)
+    darkWater = {0.0f, {84, 153, 207}};   // water from 0 to 0.3
+    lightWater = {0.3f, {116, 200, 194}};   // water from 0 to 0.3
+    foam = {0.35f, {235, 223, 152}}; // transition from 0.3 to 0.35
+    sand = {0.4f, {235, 223, 152}}; // beach from 0.35 to 0.45
+    dirt = {0.8f, {228, 160, 161}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6)
 }

@@ -43,11 +43,11 @@ struct Colors
 {
     bool lightMode{true};
 
-    std::pair<float, glm::vec3> darkWater{0.0f, {12, 9, 22}};   // water from 0 to 0.3
-    std::pair<float, glm::vec3> lightWater{0.3f, {119, 12, 9}};   // water from 0 to 0.3
-    std::pair<float, glm::vec3> foam{0.35f, {12, 9, 22}}; // transition from 0.3 to 0.35
-    std::pair<float, glm::vec3> sand{0.4f, {12, 9, 22}}; // beach from 0.35 to 0.45
-    std::pair<float, glm::vec3> dirt{0.8f, {38, 38, 43}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6)
+    std::pair<float, glm::vec3> darkWater{0.0f, {84, 153, 207}};   // water from 0 to 0.3
+    std::pair<float, glm::vec3> lightWater{0.3f, {116, 200, 194}};   // water from 0 to 0.3
+    std::pair<float, glm::vec3> foam{0.35f, {235, 223, 152}}; // transition from 0.3 to 0.35
+    std::pair<float, glm::vec3> sand{0.4f, {235, 223, 152}}; // beach from 0.35 to 0.45
+    std::pair<float, glm::vec3> dirt{0.8f, {228, 160, 161}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6)
 
     void setColorsToDark();
     void setColorsToLight();
