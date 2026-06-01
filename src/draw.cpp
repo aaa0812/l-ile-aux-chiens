@@ -93,8 +93,10 @@ void drawObjects(AppContext const &context, Matrix const &terrainCentering)
             DrawModelEx(context.winterTree2, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
             break;
         case CANDYCANE:
+            DrawModelEx(context.candyCane, objPos, Vector3{0, 1, 0.2}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
             break;
         case LOLIPOP:
+            DrawModelEx(context.lolipop, objPos, Vector3{0, 1, 0.2}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
             break;
         case BOAT:
             DrawModelEx(context.boat, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
@@ -115,14 +117,10 @@ void drawImGui(AppContext &context)
 
     if (ImGui::CollapsingHeader("Couleurs", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        if (ImGui::Button("Mode light"))
+        if (ImGui::Button("Changer de mode"))
         {
-            context.islandColors.setColorsToLight();
-            generateHeightmap(context);
-        }
-        if (ImGui::Button("Mode Dark"))
-        {
-            context.islandColors.setColorsToDark();
+            context.islandColors.lightMode ? context.islandColors.setColorsToDark() : context.islandColors.setColorsToLight();
+            generateObjectsPositions(context);
             generateHeightmap(context);
         }
     }

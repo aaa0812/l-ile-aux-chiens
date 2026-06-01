@@ -108,7 +108,14 @@ void generateObjectsPositions(AppContext &context)
         if (z > 0.4 && z < 0.7)
         {
             int rand = GetRandomValue(0, 1);
-            context.objectParams.emplace_back(glm::vec3{pos.x, pos.y, z}, GetRandomValue(0, 360), GetRandomFloat(0.2, 0.5), rand == 0 ? WINTER_TREE1 : WINTER_TREE2);
+            if (context.islandColors.lightMode)
+            {
+                context.objectParams.emplace_back(glm::vec3{pos.x, pos.y, z}, GetRandomValue(0, 360), GetRandomFloat(0.2, 0.5), rand == 0 ? CANDYCANE : LOLIPOP);
+            }
+            else
+            {
+                context.objectParams.emplace_back(glm::vec3{pos.x, pos.y, z}, GetRandomValue(0, 360), GetRandomFloat(0.2, 0.5), rand == 0 ? WINTER_TREE1 : WINTER_TREE2);
+            }
         }
     }
     generateBoat(context, positions);
@@ -198,7 +205,7 @@ void generateHeightmap(AppContext &context)
     }
 }
 
-Color calculateColors(float const &v, int const, int const, Colors const& colors)
+Color calculateColors(float const &v, int const, int const, Colors const &colors)
 {
     /* std::pair<float, glm::vec3> water{0.3f, {69, 75, 161}};   // water from 0 to 0.3
     std::pair<float, glm::vec3> foam{0.35f, {130, 170, 201}}; // transition from 0.3 to 0.35
