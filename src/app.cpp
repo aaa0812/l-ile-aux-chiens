@@ -59,42 +59,6 @@ void unload(AppContext &context)
         context.winterTree2 = {};
     }
 
-    if (context.summerTree1.meshCount > 0)
-    {
-        UnloadModel(context.summerTree1);
-        context.summerTree1 = {};
-    }
-
-    if (context.summerTree2.meshCount > 0)
-    {
-        UnloadModel(context.summerTree2);
-        context.summerTree2 = {};
-    }
-
-    if (context.springTree1.meshCount > 0)
-    {
-        UnloadModel(context.springTree1);
-        context.springTree1 = {};
-    }
-
-    if (context.springTree2.meshCount > 0)
-    {
-        UnloadModel(context.springTree2);
-        context.springTree2 = {};
-    }
-
-    if (context.autumnTree1.meshCount > 0)
-    {
-        UnloadModel(context.autumnTree1);
-        context.autumnTree1 = {};
-    }
-
-    if (context.autumnTree2.meshCount > 0)
-    {
-        UnloadModel(context.autumnTree2);
-        context.autumnTree2 = {};
-    }
-
     if (context.boat.meshCount > 0)
     {
         UnloadModel(context.boat);
@@ -106,10 +70,23 @@ void unload(AppContext &context)
         UnloadModel(context.lolipop);
         context.lolipop = {};
     }
+    
     if (context.candyCane.meshCount > 0)
     {
         UnloadModel(context.candyCane);
         context.candyCane = {};
+    }
+
+    if (context.candyLighthouse.meshCount > 0)
+    {
+        UnloadModel(context.candyLighthouse);
+        context.candyLighthouse = {};
+    }
+
+    if (context.darkLightHouse.meshCount > 0)
+    {
+        UnloadModel(context.darkLightHouse);
+        context.darkLightHouse = {};
     }
 }
 
@@ -159,9 +136,9 @@ void Colors::setColorsToDark()
 void Colors::setColorsToLight()
 {
     lightMode = true;
-    darkWater = {0.0f, {84, 153, 207}};   // water from 0 to 0.3
-    lightWater = {0.3f, {116, 200, 194}}; // water from 0 to 0.3
-    foam = {0.35f, {235, 223, 152}};      // transition from 0.3 to 0.35
-    sand = {0.4f, {235, 223, 152}};       // beach from 0.35 to 0.45
-    dirt = {0.8f, {228, 160, 161}};       // top color from 0.6 to 1 (transition from 0.45 to 0.6)
+    darkWater = {0.0f, {84, 153, 207}};
+    lightWater = {0.3f, {116, 200, 194}};
+    foam = {0.35f, {235, 223, 152}};
+    sand = {0.4f, {235, 223, 152}};
+    dirt = {0.8f, {228, 160, 161}};
 }

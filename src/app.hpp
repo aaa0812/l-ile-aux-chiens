@@ -22,13 +22,13 @@ struct PointsGenerationParameters
 
 enum Nature
 {
-    SUMMER_TREE1,
-    SUMMER_TREE2,
     WINTER_TREE1,
     WINTER_TREE2,
     BOAT,
     CANDYCANE,
-    LOLIPOP
+    LOLIPOP,
+    DARKLH,
+    CANDYLH
 };
 
 struct ObjectParams
@@ -36,7 +36,7 @@ struct ObjectParams
     glm::vec3 pos{};
     int angle{};
     float scale{};
-    Nature nature{SUMMER_TREE1};
+    Nature nature{CANDYCANE};
 };
 
 struct Colors
@@ -86,19 +86,12 @@ struct AppContext
     Model winterTree1{};
     Model winterTree2{};
 
-    Model summerTree1{};
-    Model summerTree2{};
-
-    Model autumnTree1{};
-    Model autumnTree2{};
-    
-    Model springTree1{};
-    Model springTree2{};
-
     Model candyCane{};
     Model lolipop{};
     
     Model boat{};
+    Model darkLightHouse{};
+    Model candyLighthouse{};
 
     Colors islandColors;
 

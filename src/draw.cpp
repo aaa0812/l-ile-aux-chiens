@@ -101,6 +101,12 @@ void drawObjects(AppContext const &context, Matrix const &terrainCentering)
         case BOAT:
             DrawModelEx(context.boat, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
             break;
+        case CANDYLH:
+            DrawModelEx(context.candyLighthouse, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
+            break;
+        case DARKLH:
+            DrawModelEx(context.darkLightHouse, objPos, Vector3{0, 1, 0}, obj.angle, Vector3(obj.scale, obj.scale, obj.scale), WHITE);
+            break;
 
         default:
             break;

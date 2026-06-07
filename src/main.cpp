@@ -64,7 +64,11 @@ int main()
     context.winterTree2 = LoadModel(tree2Path.string().c_str());
 
     std::filesystem::path boatPath{pathUtils::make_absolute_path("resources/boat.glb")};
+    std::filesystem::path candyLHPath{pathUtils::make_absolute_path("resources/models/phare_candy.obj")};
+    std::filesystem::path darkLHPath{pathUtils::make_absolute_path("resources/models/dark_phare.obj")};
     context.boat = LoadModel(boatPath.string().c_str());
+    context.darkLightHouse = LoadModel(darkLHPath.string().c_str());
+    context.candyLighthouse = LoadModel(candyLHPath.string().c_str());
 
     std::filesystem::path candycanePath{pathUtils::make_absolute_path("resources/models/candy-cane.obj")};
     std::filesystem::path lolipopPath{pathUtils::make_absolute_path("resources/models/lolipop.glb")};

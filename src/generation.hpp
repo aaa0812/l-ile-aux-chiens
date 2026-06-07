@@ -8,6 +8,8 @@ void generateObjectsPositions(AppContext& context);
 
 void generateBoat(AppContext& context, std::vector<glm::vec2> const& positions);
 
+void generateLighthouse(AppContext& context, std::vector<glm::vec2> const& positions);
+
 float sampleHeightmap(AppContext const& context, float u, float v);
 
 void generateHeightmap(AppContext& context);
