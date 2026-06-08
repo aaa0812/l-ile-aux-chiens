@@ -136,14 +136,14 @@ void generateBoat(AppContext &context, std::vector<glm::vec2> const &positions)
     context.objectParams.emplace_back(glm::vec3{positions[index].x, positions[index].y, z}, GetRandomValue(0, 360), 2.f, BOAT);
 }
 
-void generateLighthouse(AppContext& context, std::vector<glm::vec2> const& positions)
+void generateLighthouse(AppContext &context, std::vector<glm::vec2> const &positions)
 {
     int posMax = 0;
     float maxZ = 0;
-    for(int i = 0; i < positions.size(); i++)
+    for (int i = 0; i < positions.size(); i++)
     {
         float z = sampleHeightmap(context, positions[i].x, positions[i].y);
-        if( z > sampleHeightmap(context, positions[posMax].x, positions[posMax].y))
+        if (z > sampleHeightmap(context, positions[posMax].x, positions[posMax].y))
         {
             posMax = i;
             maxZ = z;

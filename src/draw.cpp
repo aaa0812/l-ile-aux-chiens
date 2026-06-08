@@ -155,8 +155,8 @@ void drawImGui(AppContext &context)
     // SLIDER HEIGHT MAP
     if (ImGui::CollapsingHeader("Height Map", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::SliderFloat("Radius", &context.radius, 0.01f, 0.5f);
-        ImGui::SliderFloat("Skinny", &context.fit, 0.1f, 5.0f);
+        ImGui::SliderFloat("Amplitude", &context.radius, 0.01f, 0.5f);
+        ImGui::SliderFloat("Fit", &context.fit, 0.1f, 5.0f);
     }
 
     if (ImGui::Button("Generate Height"))
