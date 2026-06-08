@@ -99,14 +99,20 @@ Deux conditions sont mises en place : la hauteur du point doit être supérieure
 
 ## Améliorations
 
-### Placement des objets sur le terrain
+### "Mode" de l'île
+2 modes sont disponibles pour changer l'aspect de l'île : un mode sombre et un mode clair. Sur l'interface, un bouton permet de changer de mode. Ci-dessous se trouvent les paramètres modifiés en fonction de celui-ci.
+
+### Placement de modèles 3D sur le terrain
+
+Différents types d'arbres apparaissent sur l'île à la place des cubes (entre 0.4 et 0.7), en fonction du mode courrant (des arbres morts pour le sombre, des bonbons pour le mode clair).
+Au lieu de stocker un tableau de positions pour placer les objets, nous stockons un tableau de `ObjectParams`, une stucture personnalisée contenant la positions de l'objet, sa scale, sa rotation et sa **Nature**. Cette structure permet de donner un angle et une échelle aléatoires à chaque objet (pour plus de réalisme). La `Nature` est un `enum` permettant de "typer" les objets (par exemple, les arbres morts ont la Nature `WINTER_TREE1` et `WINTER_TREE2`), pour charger les bons modèles 3D, notamment au changement de mode.
+
+D'autres objets que les arbres sont placés : un bateau, placé aléatoirement en dessous du niveau 0.3 (fonction `generateBoat` dans `generation.cpp` ), et un phare, placé au point le plus haut de l'île (fonction `generateLightHouse` dans `generation.cpp`).
 
 ### Couleurs
 
-Les couleurs sont gérées grâce à la `struct Colors` dans `app.hpp`. Elle contient les valeurs rgb des couleurs, un booléen indiquant si l'île est en mode "clair" ou "sombre", et deux fonctions (une permettant de passer au mode clair, l'autre au mode sombre).
+Les couleurs sont gérées grâce à la `struct Colors` dans `app.hpp`. Elle contient les valeurs rgb des couleurs, un booléen indiquant si l'île est en mode clair ou sombre, et deux fonctions (une permettant de passer au mode clair, l'autre au mode sombre).
 Les deux fonctions changent la valeur du booléen et les valeurs rgb des couleurs.
-
-Sur l'interface, un bouton permet de changer de mode (il appelle les fonctions de la `struct Colors` donc).
 
 ## Analyse du travail effectué
 
@@ -126,7 +132,7 @@ _petit problème de texture découvert après export : les phares sont tout blan
 
 ### Répartition du travail
 
-Nous avons pu facilement se coordonner afin de se répartir les tâches efficacement. Nous avons commencer à étudier le projet ensemble afin de s'assurer de bien comprendre les consignes et de s'aligner sur la vision globale du projet. Ensuite nous nous sommes partagé les étapes afin que chacune puisse travailler de son côté, nous nous tenions également au courant de chaque avancée du code et en cas de blocage ou de difficulté nous en discutions pour trouver des solutions. Une fois les fonctions de bases créées, nous avons pris la liberté de discuter ensemble de l'aspect esthétique et original de notre île afin de créer un univers propre à notre travail. Et de là, on s'est amusé à créer et à ajouter des objets 3D en suivant nos thèmes.
+Nous avons pu facilement nous coordonner afin de se répartir les tâches efficacement. Nous avons commencer à étudier le projet ensemble afin de s'assurer de bien comprendre les consignes et de s'aligner sur la vision globale du projet. Ensuite nous nous sommes partagé les étapes afin que chacune puisse travailler de son côté, nous nous tenions également au courant de chaque avancée du code et en cas de blocage ou de difficulté nous en discutions pour trouver des solutions. Une fois les fonctions de bases créées, nous avons pris la liberté de discuter ensemble de l'aspect esthétique et original de notre île afin de créer un univers propre à notre travail. Et de là, on s'est amusé à créer et à ajouter des objets 3D en suivant nos thèmes.
 
 ### Avec plus de temps ?
 
