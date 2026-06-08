@@ -102,7 +102,7 @@ Deux conditions sont mises en place : la hauteur du point doit être supérieure
 ### "Mode" de l'île
 2 modes sont disponibles pour changer l'aspect de l'île : un mode sombre et un mode clair. Sur l'interface, un bouton permet de changer de mode. Ci-dessous se trouvent les paramètres modifiés en fonction de celui-ci.
 
-### Placement de modèles 3D sur le terrain
+### Placement amélioré
 
 Différents types d'arbres apparaissent sur l'île à la place des cubes (entre 0.4 et 0.7), en fonction du mode courrant (des arbres morts pour le sombre, des bonbons pour le mode clair).
 Au lieu de stocker un tableau de positions pour placer les objets, nous stockons un tableau de `ObjectParams`, une stucture personnalisée contenant la positions de l'objet, sa scale, sa rotation et sa **Nature**. Cette structure permet de donner un angle et une échelle aléatoires à chaque objet (pour plus de réalisme). La `Nature` est un `enum` permettant de "typer" les objets (par exemple, les arbres morts ont la Nature `WINTER_TREE1` et `WINTER_TREE2`), pour charger les bons modèles 3D, notamment au changement de mode.
@@ -137,3 +137,5 @@ Nous avons pu facilement nous coordonner afin de se répartir les tâches effica
 ### Avec plus de temps ?
 
 Une de nos idées était de faire en sorte que chaque mode de l'île (clair, sombre) ait **sa propre forme de masque**. Si le temps nous le permettait, nous aurions aimé faire un masque en forme d'étoile pour l'île en mode clair pour aller au bout de l'aspect "mignon" de l'île.
+
+Une autre idée était de transitionner du mode sombre au clair et inversement, notamment au niveau des couleurs. Dans la version actuelle, le changement est très brut, avec un simple bouton. Nous avions imaginé un slider permettant de choisir à quel point l'île était sombre ou clair.
