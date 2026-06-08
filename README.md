@@ -53,3 +53,5 @@ Les deux fonctions changent la valeur du booléen et les valeurs rgb des couleur
 Sur l'interface, un bouton permet de changer de mode (il appelle les fonctions de la `struct Colors` donc).
 
 #### Dificultés
+
+La fonction `calculateColors` a besoin de la `struct Colors`. Nous avons donc dû modifier la fonction `TransformImage` dans `raylibUtils.hpp` pour qu'elle accepte un autre type en paramètres. Ce n'était pas évident car la notion de template ne nous était pas familière.
