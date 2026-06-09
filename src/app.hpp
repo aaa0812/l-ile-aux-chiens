@@ -79,10 +79,6 @@ struct AppContext
     Material cubeMaterial{};
     float cubeScale{0.1f};
 
-    Model dog{};
-    Material dogMaterial{};
-    float dogScale{0.1f};
-
     Model winterTree1{};
     Model winterTree2{};
 

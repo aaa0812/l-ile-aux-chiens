@@ -149,7 +149,7 @@ void generateLighthouse(AppContext &context, std::vector<glm::vec2> const &posit
             maxZ = z;
         }
     }
-    context.objectParams.emplace_back(glm::vec3{positions[posMax].x, positions[posMax].y, maxZ}, 0, 0.5f, context.islandColors.lightMode ? CANDYLH : DARKLH);
+    context.objectParams.emplace_back(glm::vec3{positions[posMax].x, positions[posMax].y, maxZ}, 0, context.islandColors.lightMode ? 0.5f : 0.3f, context.islandColors.lightMode ? CANDYLH : DARKLH);
 }
 
 float sampleHeightmap(AppContext const &context, float u, float v)

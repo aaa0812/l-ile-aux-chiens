@@ -51,11 +51,6 @@ int main()
     // context.model = LoadModelFromMesh(context.mesh);                  // Load model from generated mesh
     // context.model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = context.texture; // Set map diffuse texture
     // std::filesystem::path path { pathUtils::make_absolute_path("resources/chien.glb") };
-    /*
-    std::filesystem::path textPath { pathUtils::make_absolute_path("resources/heightmap.png") };
-    context.dog = LoadModel(path.string().c_str());
-    Texture2D texture = LoadTexture(textPath.string().c_str());
-    context.dog.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture; */
 
     std::filesystem::path treePath{pathUtils::make_absolute_path("resources/models/dead-tree.glb")};
     context.winterTree1 = LoadModel(treePath.string().c_str());
@@ -64,8 +59,8 @@ int main()
     context.winterTree2 = LoadModel(tree2Path.string().c_str());
 
     std::filesystem::path boatPath{pathUtils::make_absolute_path("resources/boat.glb")};
-    std::filesystem::path candyLHPath{pathUtils::make_absolute_path("resources/models/phare_candy.obj")};
-    std::filesystem::path darkLHPath{pathUtils::make_absolute_path("resources/models/dark_phare.obj")};
+    std::filesystem::path candyLHPath{pathUtils::make_absolute_path("resources/models/phare_candy.glb")};
+    std::filesystem::path darkLHPath{pathUtils::make_absolute_path("resources/models/dark_phare.glb")};
     context.boat = LoadModel(boatPath.string().c_str());
     context.darkLightHouse = LoadModel(darkLHPath.string().c_str());
     context.candyLighthouse = LoadModel(candyLHPath.string().c_str());

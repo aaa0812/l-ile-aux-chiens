@@ -41,12 +41,6 @@ void unload(AppContext &context)
         context.cube = {};
     }
 
-    if (context.dog.meshCount > 0)
-    {
-        UnloadModel(context.dog);
-        context.dog = {};
-    }
-
     if (context.winterTree1.meshCount > 0)
     {
         UnloadModel(context.winterTree1);

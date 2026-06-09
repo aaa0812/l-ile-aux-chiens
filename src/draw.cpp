@@ -46,28 +46,6 @@ void drawCubes(AppContext const &context, Matrix const &terrainCentering)
     }
 }
 
-void drawDogs(AppContext const &context, Matrix const &terrainCentering)
-{
-    if (context.objectParams.empty())
-    {
-        return;
-    }
-
-    for (ObjectParams const &obj : context.objectParams)
-    {
-        Vector3 initPos = {0, 0, 0}; // need this to apply matrices
-        Matrix const objectTranslation{MatrixTranslate(
-            obj.pos.x * context.terrainSize.x,
-            obj.pos.z * context.terrainSize.y,
-            obj.pos.y * context.terrainSize.z)};
-        Matrix const centeredTranslation{MatrixMultiply(objectTranslation, terrainCentering)};
-        Matrix const scale{MatrixScale(context.dogScale, context.dogScale, context.dogScale)};
-        Matrix const transform{MatrixMultiply(scale, centeredTranslation)};
-        Vector3 dogPos = Vector3Transform(initPos, transform); // apply matrices to Vector3
-        DrawModel(context.dog, dogPos, context.dogScale, WHITE);
-    }
-}
-
 void drawObjects(AppContext const &context, Matrix const &terrainCentering)
 {
     if (context.objectParams.empty())
