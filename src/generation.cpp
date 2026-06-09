@@ -208,7 +208,6 @@ void generateHeightmap(AppContext &context)
                                                               [&](glm::vec2 const &p) -> float
                                                               {
                                                                   //     TODO(student): implement stack based noise and island mask
-                                                                  //     return (perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
                                                                   return (octaveNoise(p, perlinNoiseSeeded, context.octaves, context.lacunarity, context.gain, context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f) * masqueRadial(p, context.radius, context.fit);
                                                               });
 
@@ -224,11 +223,6 @@ void generateHeightmap(AppContext &context)
 
 Color calculateColors(float const &v, int const, int const, Colors const &colors)
 {
-    /* std::pair<float, glm::vec3> water{0.3f, {69, 75, 161}};   // water from 0 to 0.3
-    std::pair<float, glm::vec3> foam{0.35f, {130, 170, 201}}; // transition from 0.3 to 0.35
-    std::pair<float, glm::vec3> sand{0.45f, {130, 170, 201}}; // beach from 0.35 to 0.45
-    std::pair<float, glm::vec3> dirt{0.6f, {227, 230, 243}};  // top color from 0.6 to 1 (transition from 0.45 to 0.6) */
-
     if (v < colors.lightWater.first)
     {
         return color_from(interpolateVec(colors.darkWater, colors.lightWater, v)); // water
