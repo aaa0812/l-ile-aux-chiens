@@ -26,7 +26,7 @@ Les paramètres pour gérer le bruit sont :
 
 ### Génération de heightmap
 
-Nous avons d'utiliser une fonction gaussienne pour effectuer un masque radial. Le but est d'obtenir une **zone d'élévation élevée au centre** et des **zones plus faibles** donc vers zéro **aux extrémités**. Ensuite, nous multiplions le masque à notre bruit fractal. Notre masque comprend deux paramètres :
+Nous avons utilisé une fonction gaussienne pour effectuer un masque radial. Le but est d'obtenir une **zone d'élévation élevée au centre** et des **zones plus faibles** donc vers zéro **aux extrémités**. Ensuite, nous multiplions le masque à notre bruit fractal. Notre masque comprend deux paramètres :
 
 - **l'amplitude** : gère la hauteur de l'île et son étendue.
 - **un facteur Fit** : permet de **normaliser** les valeurs du masque entre 0 et 1
@@ -100,6 +100,7 @@ Deux conditions sont mises en place : la hauteur du point doit être supérieure
 ## Améliorations
 
 ### "Mode" de l'île
+
 2 modes sont disponibles pour changer l'aspect de l'île : un mode sombre et un mode clair. Sur l'interface, un bouton permet de changer de mode. Ci-dessous se trouvent les paramètres modifiés en fonction de celui-ci.
 
 ### Placement amélioré
@@ -128,11 +129,11 @@ Pour que les valeurs soient comprises entre 0 et 1, nous étions tentées d'util
 
 #### Import d'objet 3D réalisé sur Blender
 
-_petit problème de texture découvert après export : les phares sont tout blanc. On a expérimenter plusieurs formats d'exports pour voir lequel fonctionnait le mieux. (a voir si ca marche maintenant)_
+Petit problème de texture découvert après export : les phares sont tout blanc. On a expérimenté plusieurs formats d'exports pour voir lequel fonctionnait le mieux. Au final, le format glb permet de bien transférer les textures.
 
 ### Répartition du travail
 
-Nous avons pu facilement nous coordonner afin de se répartir les tâches efficacement. Nous avons commencer à étudier le projet ensemble afin de s'assurer de bien comprendre les consignes et de s'aligner sur la vision globale du projet. Ensuite nous nous sommes partagé les étapes afin que chacune puisse travailler de son côté, nous nous tenions également au courant de chaque avancée du code et en cas de blocage ou de difficulté nous en discutions pour trouver des solutions. Une fois les fonctions de bases créées, nous avons pris la liberté de discuter ensemble de l'aspect esthétique et original de notre île afin de créer un univers propre à notre travail. Et de là, on s'est amusé à créer et à ajouter des objets 3D en suivant nos thèmes.
+Nous avons pu facilement nous coordonner afin de se répartir les tâches efficacement. Nous avons commencé à étudier le projet ensemble afin de s'assurer de bien comprendre les consignes et de s'aligner sur la vision globale du projet. Ensuite nous nous sommes partagé les étapes afin que chacune puisse travailler de son côté, nous nous tenions également au courant de chaque avancée du code et en cas de blocage ou de difficulté nous en discutions pour trouver des solutions. Une fois les fonctions de bases créées, nous avons pris la liberté de discuter ensemble de l'aspect esthétique et original de notre île afin de créer un univers propre à notre travail. Et de là, on s'est amusée à créer et à ajouter des objets 3D en suivant nos thèmes.
 
 ### Avec plus de temps ?
 
